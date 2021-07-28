@@ -29,7 +29,7 @@ reviews-v3-85d446d4bf-qbf24       1/1     Running   0          39m
 
 可以看到 details、productpage、ratings 除了业务容器，还运行了 Envoy Sidecar 容器。reviews 只有一个容器。reviews 服务有三个版本，每个版本返回的星星颜色不同。
 
-## 验证 demo 是否正常工作
+## 验证 demo 是否正常工作
 
 使用下面的命令，可以看到结果，表示 pod 在正常运行：
 
