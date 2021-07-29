@@ -63,7 +63,7 @@ kubectl exec -it "$(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metad
 
 1. 为 reviews 创建路由规则：
 
-如下图创建 reviews 被调规则规则：
+如下图创建 reviews 被调规则：
 
 ![image](pic/rule.png)
 
