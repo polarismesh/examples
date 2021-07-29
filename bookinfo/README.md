@@ -1,15 +1,18 @@
 # book info exmaple
 
-本项目与 istio 的 bookinfo demo 基本相同。修改了其中的 reviews 服务和 ratings 服务，details、productpage 与 istio 的 demo 相同。
-
-reviews 在本项目中服务基于 spring cloud tencent 构建，自注册服务。
-
-ratings 增加了参数，控制是否返回错误，用来触发 reviews 服务实例产生熔断。
+本项目与 istio 的 bookinfo demo 基本相同。修改了其中的 reviews 服务和 ratings 服务，details、productpage 与 istio 的 demo 相同。reviews 在本项目中服务基于 spring cloud tencent 构建，自注册服务。ratings 增加了参数，控制是否返回错误，用来触发 reviews 服务实例产生熔断。
 
 服务之间的调用关系如下图：
 
 ![image](pic/arch.png)
 
+
+## 环境准备
+
+本项目中的 productpage、details 和 ratings 服务，通过 Envoy Sidecar 代理来进行服务发现和服务治理。您需要保证：
+
+1. Poarlis Server 已经安装完成，参考[Polaris server 安装手册](https://github.com/PolarisMesh/website/blob/main/docs/zh/doc/%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E5%AE%89%E8%A3%85%E6%9C%8D%E5%8A%A1%E7%AB%AF.md)
+2. Polaris Controller 已经安装完成，参考[Polaris 网格使用指南](https://github.com/PolarisMesh/website/blob/main/docs/zh/doc/%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E4%BD%BF%E7%94%A8k8s%E5%92%8C%E6%9C%8D%E5%8A%A1%E7%BD%91%E6%A0%BC.md)
 
 ## 部署 demo
 
@@ -83,3 +86,7 @@ kubectl exec -it "$(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metad
 ![image](pic/login.png)
 
 未登录前，每次刷新右侧的 Book Reviews 的星星会变换颜色。当您点击上图右上角的 `Sign in` ，并在弹出对话框的 `User Name` 中填入 jason 点击登录后，再次刷新页面，您会发现右侧的星星的颜色不再变化。
+
+4. 原理解释
+
+当您在 /productpage 页面输入 jason 登录后，您的每次请求会带上 header，end-user:jason ，productpage 会带上这个 header 去请求 reviews 服务，这个符合您上面配置的路由策略，因此流量只会被导向配置了 subset:v1 的 reviews 的实例。
