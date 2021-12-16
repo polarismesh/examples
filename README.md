@@ -1,1 +1,1 @@
-# samples
+# polaris examples
