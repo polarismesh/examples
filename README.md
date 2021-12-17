@@ -1,1 +1,1 @@
-# polaris examples
+# Examples
