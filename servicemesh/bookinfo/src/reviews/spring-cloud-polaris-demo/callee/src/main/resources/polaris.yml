@@ -1,0 +1,29 @@
+global:
+  #描述: SDK api调用相关配置<必填项>
+  api:
+    #描述: api超时时间
+    timeout: 5s
+    #描述: 客户端给服务端定时上报自身信息的间隔
+    reportInterval: 10m
+    #描述: api因为网络原因调用失败后的最大重试次数
+    maxRetryTimes: 1
+    #描述: 2次重试之间的重试间隔
+    retryInterval: 500ms
+  #描述: 对接北极星服务端的相关配置<必填项>
+  serverConnector:
+    #描述: 访问server的连接协议，SDK会根据协议名称会加载对应的插件
+    protocol: grpc
+    #描述: 发起连接后的连接超时时间
+    connectTimeout: 500ms
+    #描述: 与服务端发起远程请求超时时间
+    messageTimeout: 5s
+    #描述: 连接空闲时间（以最后一次消息交互时间来算），长连接模式下，当连接空闲超过一定时间后，SDK会主动释放连接
+    connectionIdleTimeout: 60s
+    #描述: server节点的切换周期，为了使得server的压力能够均衡，SDK会定期切换目标服务端节点
+    serverSwitchInterval: 10m
+    #描述：重连间隔时间
+    reconnectInterval: 500ms
+  #描述: 监控及日志数据上报相关配置
+  statReporter:
+    #描述: 是否启用上报
+    enable: true
