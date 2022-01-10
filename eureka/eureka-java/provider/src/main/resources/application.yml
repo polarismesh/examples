@@ -1,0 +1,11 @@
+server:
+  port: 20001
+spring:
+  application:
+    name: eureka-provider-service
+eureka:
+  instance:
+    lease-renew-interval-in-seconds: 3
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/eureka/
