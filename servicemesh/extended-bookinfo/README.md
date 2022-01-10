@@ -12,7 +12,7 @@
 本项目中的 productpage、details 和 ratings 服务，通过 Envoy Sidecar 代理来进行服务发现和服务治理。您需要保证：
 
 1. Polaris Server 已经安装完成，参考[Polaris server 安装手册](https://github.com/polarismesh/website/blob/main/docs/zh/doc/%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E5%AE%89%E8%A3%85%E6%9C%8D%E5%8A%A1%E7%AB%AF/%E5%AE%89%E8%A3%85%E9%9B%86%E7%BE%A4%E7%89%88.md)
-2. Polaris Controller 已经安装完成，参考[Polaris 网格使用指南](https://github.com/polarismesh/website/blob/main/docs/zh/doc/%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E4%BD%BF%E7%94%A8%E6%9C%8D%E5%8A%A1%E7%BD%91%E6%A0%BC/%E4%BD%BF%E7%94%A8K8s%E5%92%8C%E7%BD%91%E6%A0%BC.md)
+2. Polaris Controller 已经安装完成，参考[Polaris 网格使用指南](https://github.com/polarismesh/website/blob/main/docs/zh/doc/%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/%E4%BD%BF%E7%94%A8%E6%9C%8D%E5%8A%A1%E7%BD%91%E6%A0%BC.md)
 
 ## 部署 demo
 
