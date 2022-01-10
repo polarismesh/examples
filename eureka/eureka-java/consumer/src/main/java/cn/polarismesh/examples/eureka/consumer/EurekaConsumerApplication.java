@@ -26,12 +26,6 @@ public class EurekaConsumerApplication {
                 String.format("http://%s/echo1?value=%s", PROVIDER_SERVICE_NAME, value), String.class);
     }
 
-
-    @RequestMapping("/services")
-    public String services() {
-        return restTemplate.getForObject(String.format("http://%s/eureka/v2/apps", PROVIDER_SERVICE_NAME), String.class);
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(EurekaConsumerApplication.class, args);
     }
