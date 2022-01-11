@@ -6,6 +6,7 @@ spring:
 eureka:
   instance:
     lease-renew-interval-in-seconds: 3
+    prefer-ip-address: true
   client:
     serviceUrl:
       defaultZone: http://127.0.0.1:8761/eureka/
