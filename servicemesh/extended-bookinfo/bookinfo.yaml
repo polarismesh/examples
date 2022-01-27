@@ -188,7 +188,7 @@ spec:
         - java -jar /app/reviews-0.0.1-SNAPSHOT.jar --spring.cloud.polaris.address="grpc://127.0.0.1:8090"
         name: reviews
         image: ccr.ccs.tencentyun.com/polaris_mesh/reviews:0.1.7
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         env:
         - name: LOG_DIR
           value: "/tmp/logs"
@@ -240,7 +240,7 @@ spec:
         - java -jar /app/reviews-0.0.1-SNAPSHOT.jar --spring.cloud.polaris.address="grpc://127.0.0.1:8090"
         name: reviews
         image: ccr.ccs.tencentyun.com/polaris_mesh/reviews:0.1.7
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         env:
         - name: LOG_DIR
           value: "/tmp/logs"
@@ -292,7 +292,7 @@ spec:
         - java -jar /app/reviews-0.0.1-SNAPSHOT.jar --spring.cloud.polaris.address="grpc://127.0.0.1:8090"
         name: reviews
         image: ccr.ccs.tencentyun.com/polaris_mesh/reviews:0.1.7
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         env:
         - name: LOG_DIR
           value: "/tmp/logs"
