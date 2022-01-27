@@ -185,7 +185,7 @@ spec:
       - command:
         - /bin/bash
         - -c
-        - java -jar /app/reviews-0.0.1-SNAPSHOT.jar --spring.cloud.polaris.address="grpc://127.0.0.1:8090"
+        - java -jar /app/reviews-0.0.1-SNAPSHOT.jar --spring.cloud.polaris.address="grpc://127.0.0.1:8091"
         name: reviews
         image: ccr.ccs.tencentyun.com/polaris_mesh/reviews:0.1.7
         imagePullPolicy: Always
@@ -237,7 +237,7 @@ spec:
       - command:
         - /bin/bash
         - -c
-        - java -jar /app/reviews-0.0.1-SNAPSHOT.jar --spring.cloud.polaris.address="grpc://127.0.0.1:8090"
+        - java -jar /app/reviews-0.0.1-SNAPSHOT.jar --spring.cloud.polaris.address="grpc://127.0.0.1:8091"
         name: reviews
         image: ccr.ccs.tencentyun.com/polaris_mesh/reviews:0.1.7
         imagePullPolicy: Always
@@ -289,7 +289,7 @@ spec:
       - command:
         - /bin/bash
         - -c
-        - java -jar /app/reviews-0.0.1-SNAPSHOT.jar --spring.cloud.polaris.address="grpc://127.0.0.1:8090"
+        - java -jar /app/reviews-0.0.1-SNAPSHOT.jar --spring.cloud.polaris.address="grpc://127.0.0.1:8091"
         name: reviews
         image: ccr.ccs.tencentyun.com/polaris_mesh/reviews:0.1.7
         imagePullPolicy: Always
