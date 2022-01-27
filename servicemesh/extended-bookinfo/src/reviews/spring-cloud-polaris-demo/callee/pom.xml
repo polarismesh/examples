@@ -17,7 +17,6 @@
         <dependency>
             <artifactId>spring-cloud-starter-tencent-polaris-discovery</artifactId>
             <groupId>com.tencent.cloud</groupId>
-            <version>${project.version}</version>
         </dependency>
 
         <dependency>
