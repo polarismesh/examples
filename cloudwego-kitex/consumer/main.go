@@ -49,7 +49,7 @@ func (svr *KitexConsumer) Run() {
 
 func (svr *KitexConsumer) runWebServer() {
 	http.HandleFunc("/echo", func(rw http.ResponseWriter, r *http.Request) {
-		log.Printf("\n\n\nstart to test dubbo")
+		log.Printf("\n\n\nstart to test cloudwego/kitex")
 		resp, err := svr.client.Echo(context.TODO(), &api.Request{Message: "Hi,polaris!"})
 		if err != nil {
 			log.Printf("error: %v\n", err)
