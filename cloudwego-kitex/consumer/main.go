@@ -33,7 +33,7 @@ import (
 
 const (
 	confPath  = "polaris.yaml"
-	Namespace = "Polaris"
+	Namespace = "default"
 	// At present,polaris server tag is v1.4.0，can't support auto create namespace,
 	// if you want to use a namespace other than default,Polaris ,before you register an instance,
 	// you should create the namespace at polaris console first.
@@ -80,7 +80,7 @@ func main() {
 	}
 
 	// client.WithTag sets the namespace tag for service discovery
-	newClient := hello.MustNewClient("echo", client.WithTag("namespace", Namespace),
+	newClient := hello.MustNewClient("EchoServerKitex", client.WithTag("namespace", Namespace),
 		client.WithResolver(r), client.WithRPCTimeout(time.Second*60))
 
 	consumer := &KitexConsumer{

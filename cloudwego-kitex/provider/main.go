@@ -32,7 +32,7 @@ import (
 
 const (
 	confPath  = "./polaris.yaml"
-	Namespace = "Polaris"
+	Namespace = "default"
 	// At present,polaris server tag is v1.4.0，can't support auto create namespace,
 	// If you want to use a namespace other than default,Polaris ,before you register an instance,
 	// you should create the namespace at polaris console first.
@@ -66,7 +66,7 @@ func main() {
 	}
 
 	Info := &registry.Info{
-		ServiceName: "echo",
+		ServiceName: "EchoServerKitex",
 		Tags: map[string]string{
 			"namespace": Namespace,
 		},
