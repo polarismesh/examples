@@ -126,7 +126,7 @@ spec:
       serviceAccountName: bookinfo-ratings
       containers:
         - name: ratings
-          image: docker.io/polarismesh/ratings:0.1.8
+          image: docker.io/polarismesh/examples-bookinfo-ratings-v1:0.1.8
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9080
@@ -136,22 +136,6 @@ spec:
 ##################################################################################################
 # Reviews service
 ##################################################################################################
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    polaris.cloud.tencentyun.com/autoRegister: "true"
-  name: reviews
-  labels:
-    app: reviews
-    service: reviews
-spec:
-  ports:
-    - port: 9080
-      name: http
-  selector:
-    app: reviews
----
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -182,20 +166,14 @@ spec:
     spec:
       serviceAccountName: bookinfo-reviews
       containers:
-        - command:
-            - /bin/bash
-            - -c
-            - java -jar /app/reviews-0.0.1-SNAPSHOT.jar --spring.cloud.polaris.address="grpc://127.0.0.1:8091"
-          name: reviews
-          image: docker.io/polarismesh/reviews:0.1.8
+        - name: reviews
+          image: docker.io/polarismesh/examples-bookinfo-reviews-v1:0.1.8
           imagePullPolicy: Always
           env:
             - name: LOG_DIR
-              value: "/tmp/logs"
-            - name: ENABLE_RATINGS
-              value: "true"
-            - name: STAR_COLOR
-              value: red
+              value: "/tmp/logs"          
+            - name: POLARIS_ADDRESS
+              value: "grpc://polaris.polaris-system:8091"
           ports:
             - containerPort: 9080
           volumeMounts:
@@ -234,20 +212,14 @@ spec:
     spec:
       serviceAccountName: bookinfo-reviews
       containers:
-        - command:
-            - /bin/bash
-            - -c
-            - java -jar /app/reviews-0.0.1-SNAPSHOT.jar --spring.cloud.polaris.address="grpc://127.0.0.1:8091"
-          name: reviews
-          image: docker.io/polarismesh/reviews:0.1.8
+        - name: reviews
+          image: docker.io/polarismesh/examples-bookinfo-reviews-v2:0.1.8
           imagePullPolicy: Always
           env:
             - name: LOG_DIR
               value: "/tmp/logs"
-            - name: ENABLE_RATINGS
-              value: "true"
-            - name: STAR_COLOR
-              value: blue
+            - name: POLARIS_ADDRESS
+              value: "grpc://polaris.polaris-system:8091"
           ports:
             - containerPort: 9080
           volumeMounts:
@@ -286,20 +258,14 @@ spec:
     spec:
       serviceAccountName: bookinfo-reviews
       containers:
-        - command:
-            - /bin/bash
-            - -c
-            - java -jar /app/reviews-0.0.1-SNAPSHOT.jar --spring.cloud.polaris.address="grpc://127.0.0.1:8091"
-          name: reviews
-          image: docker.io/polarismesh/reviews:0.1.8
+        - name: reviews
+          image: docker.io/polarismesh/examples-bookinfo-reviews-v3:0.1.8
           imagePullPolicy: Always
           env:
             - name: LOG_DIR
               value: "/tmp/logs"
-            - name: ENABLE_RATINGS
-              value: "true"
-            - name: STAR_COLOR
-              value: green
+            - name: POLARIS_ADDRESS
+              value: "grpc://polaris.polaris-system:8091"
           ports:
             - containerPort: 9080
           volumeMounts:
