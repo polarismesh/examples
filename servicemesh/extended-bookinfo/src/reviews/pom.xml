@@ -2,17 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+	<groupId>com.tencent.cloud</groupId>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.tencent.cloud</groupId>
-    <artifactId>spring-cloud-reviews-demo</artifactId>
-    <packaging>pom</packaging>
-    <version>0.1.0-SNAPSHOT</version>
-    <modules>
-        <module>reviews</module>
-    </modules>
+    <artifactId>reviews</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
 
-    <properties>
+	<properties>
         <!-- Project revision -->
         <spring.cloud.tencent.version>1.6.0-Hoxton.SR12</spring.cloud.tencent.version>
 
@@ -31,8 +28,8 @@
         <!-- Spring Framework -->
         <spring.boot.version>2.3.12.RELEASE</spring.boot.version>
     </properties>
-
-    <dependencyManagement>
+	
+	<dependencyManagement>
         <dependencies>
             <!-- Spring Framework Dependencies -->
             <dependency>
@@ -70,8 +67,55 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+	
+    <dependencies>
 
-    <build>
+        <dependency>
+            <artifactId>spring-cloud-starter-tencent-polaris-discovery</artifactId>
+            <groupId>com.tencent.cloud</groupId>
+        </dependency>
+
+        <dependency>
+            <artifactId>spring-cloud-starter-tencent-polaris-circuitbreaker</artifactId>
+            <groupId>com.tencent.cloud</groupId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tencent.cloud</groupId>
+            <artifactId>spring-cloud-starter-tencent-polaris-ratelimit</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!--  系统服务监控依赖  -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- feign客户端依赖  -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+        <!-- 熔断超时后，重试机制依赖-->
+        <dependency>
+            <groupId>org.springframework.retry</groupId>
+            <artifactId>spring-retry</artifactId>
+        </dependency>
+    </dependencies>
+	
+	<build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

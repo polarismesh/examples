@@ -1,0 +1,9 @@
+server:
+  session-timeout: 1800
+  port: 9080
+spring:
+  application:
+    name: reviews
+  cloud:
+    polaris:
+      address: ${POLARIS_ADDRESS}
