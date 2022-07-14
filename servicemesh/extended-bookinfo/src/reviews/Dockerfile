@@ -10,4 +10,8 @@ ENV STAR_COLOR ${star_color:-black}
 
 COPY target/reviews-0.1.0-SNAPSHOT.jar /app/reviews.jar
 
-CMD["java", "-jar", "/app/reviews.jar"]
+WORKDIR /app
+
+RUN chmod 777 /app/
+
+CMD ["java", "-jar", "reviews.jar"]
