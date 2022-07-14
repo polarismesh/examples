@@ -54,3 +54,7 @@ applog/
 */backup
 /backup
 backup
+
+.gradle
+buildSrc
+gradle
