@@ -73,7 +73,7 @@ spec:
       serviceAccountName: bookinfo-details
       containers:
         - name: details
-          image: docker.io/istio/examples-bookinfo-details-v1:1.16.2
+          image: docker.io/polarismesh/examples-bookinfo-details-v1:0.1.8
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9080
@@ -126,7 +126,7 @@ spec:
       serviceAccountName: bookinfo-ratings
       containers:
         - name: ratings
-          image: ccr.ccs.tencentyun.com/polaris_mesh/ratings:0.0.1
+          image: docker.io/polarismesh/ratings:0.1.8
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9080
@@ -187,7 +187,7 @@ spec:
             - -c
             - java -jar /app/reviews-0.0.1-SNAPSHOT.jar --spring.cloud.polaris.address="grpc://127.0.0.1:8091"
           name: reviews
-          image: ccr.ccs.tencentyun.com/polaris_mesh/reviews:0.1.7
+          image: docker.io/polarismesh/reviews:0.1.8
           imagePullPolicy: Always
           env:
             - name: LOG_DIR
@@ -239,7 +239,7 @@ spec:
             - -c
             - java -jar /app/reviews-0.0.1-SNAPSHOT.jar --spring.cloud.polaris.address="grpc://127.0.0.1:8091"
           name: reviews
-          image: ccr.ccs.tencentyun.com/polaris_mesh/reviews:0.1.7
+          image: docker.io/polarismesh/reviews:0.1.8
           imagePullPolicy: Always
           env:
             - name: LOG_DIR
@@ -291,7 +291,7 @@ spec:
             - -c
             - java -jar /app/reviews-0.0.1-SNAPSHOT.jar --spring.cloud.polaris.address="grpc://127.0.0.1:8091"
           name: reviews
-          image: ccr.ccs.tencentyun.com/polaris_mesh/reviews:0.1.7
+          image: docker.io/polarismesh/reviews:0.1.8
           imagePullPolicy: Always
           env:
             - name: LOG_DIR
@@ -361,7 +361,7 @@ spec:
       serviceAccountName: bookinfo-productpage
       containers:
         - name: productpage
-          image: docker.io/istio/examples-bookinfo-productpage-v1:1.16.2
+          image: docker.io/polarismesh/examples-bookinfo-productpage-v1:0.1.8
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9080
