@@ -1,6 +1,6 @@
 server:
   session-timeout: 1800
-  port: 9081
+  port: 9080
 spring:
   application:
     name: reviews

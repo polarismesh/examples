@@ -38,9 +38,9 @@ metadata:
     service: details
 spec:
   ports:
-  - port: 9080
-    targetPort: 9080
-    name: http
+    - port: 9080
+      targetPort: 9080
+      name: http
   selector:
     app: details
 ---
@@ -72,13 +72,13 @@ spec:
     spec:
       serviceAccountName: bookinfo-details
       containers:
-      - name: details
-        image: docker.io/istio/examples-bookinfo-details-v1:1.16.2
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 9080
-        securityContext:
-          runAsUser: 1000
+        - name: details
+          image: docker.io/istio/examples-bookinfo-details-v1:1.16.2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9080
+          securityContext:
+            runAsUser: 1000
 ---
 ##################################################################################################
 # Ratings service
@@ -92,8 +92,8 @@ metadata:
     service: ratings
 spec:
   ports:
-  - port: 9080
-    name: http
+    - port: 9080
+      name: http
   selector:
     app: ratings
 ---
@@ -125,13 +125,13 @@ spec:
     spec:
       serviceAccountName: bookinfo-ratings
       containers:
-      - name: ratings
-        image: ccr.ccs.tencentyun.com/polaris_mesh/ratings:0.0.1
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 9080
-        securityContext:
-          runAsUser: 1000
+        - name: ratings
+          image: ccr.ccs.tencentyun.com/polaris_mesh/ratings:0.0.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9080
+          securityContext:
+            runAsUser: 1000
 ---
 ##################################################################################################
 # Reviews service
@@ -147,8 +147,8 @@ metadata:
     service: reviews
 spec:
   ports:
-  - port: 9080
-    name: http
+    - port: 9080
+      name: http
   selector:
     app: reviews
 ---
@@ -175,41 +175,41 @@ spec:
   template:
     metadata:
       annotations:
-        sidecar.istio.io/inject: "false"
+        sidecar.polarismesh.cn/inject: "false"
       labels:
         app: reviews
         version: v1
     spec:
       serviceAccountName: bookinfo-reviews
       containers:
-      - command:
-        - /bin/bash
-        - -c
-        - java -jar /app/reviews-0.0.1-SNAPSHOT.jar --spring.cloud.polaris.address="grpc://127.0.0.1:8090"
-        name: reviews
-        image: ccr.ccs.tencentyun.com/polaris_mesh/reviews:0.1.7
-        imagePullPolicy: IfNotPresent
-        env:
-        - name: LOG_DIR
-          value: "/tmp/logs"
-        - name: ENABLE_RATINGS
-          value: "true"
-        - name: STAR_COLOR
-          value: red
-        ports:
-        - containerPort: 9080
-        volumeMounts:
-        - name: tmp
-          mountPath: /tmp
-        - name: wlp-output
-          mountPath: /opt/ibm/wlp/output
-        securityContext:
-          runAsUser: 1000
+        - command:
+            - /bin/bash
+            - -c
+            - java -jar /app/reviews-0.0.1-SNAPSHOT.jar --spring.cloud.polaris.address="grpc://127.0.0.1:8091"
+          name: reviews
+          image: ccr.ccs.tencentyun.com/polaris_mesh/reviews:0.1.7
+          imagePullPolicy: Always
+          env:
+            - name: LOG_DIR
+              value: "/tmp/logs"
+            - name: ENABLE_RATINGS
+              value: "true"
+            - name: STAR_COLOR
+              value: red
+          ports:
+            - containerPort: 9080
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: wlp-output
+              mountPath: /opt/ibm/wlp/output
+          securityContext:
+            runAsUser: 1000
       volumes:
-      - name: wlp-output
-        emptyDir: {}
-      - name: tmp
-        emptyDir: {}
+        - name: wlp-output
+          emptyDir: {}
+        - name: tmp
+          emptyDir: {}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -227,41 +227,41 @@ spec:
   template:
     metadata:
       annotations:
-        sidecar.istio.io/inject: "false"
+        sidecar.polarismesh.cn/inject: "false"
       labels:
         app: reviews
         version: v2
     spec:
       serviceAccountName: bookinfo-reviews
       containers:
-      - command:
-        - /bin/bash
-        - -c
-        - java -jar /app/reviews-0.0.1-SNAPSHOT.jar --spring.cloud.polaris.address="grpc://127.0.0.1:8090"
-        name: reviews
-        image: ccr.ccs.tencentyun.com/polaris_mesh/reviews:0.1.7
-        imagePullPolicy: IfNotPresent
-        env:
-        - name: LOG_DIR
-          value: "/tmp/logs"
-        - name: ENABLE_RATINGS
-          value: "true"
-        - name: STAR_COLOR
-          value: blue
-        ports:
-        - containerPort: 9080
-        volumeMounts:
-        - name: tmp
-          mountPath: /tmp
-        - name: wlp-output
-          mountPath: /opt/ibm/wlp/output
-        securityContext:
-          runAsUser: 1000
+        - command:
+            - /bin/bash
+            - -c
+            - java -jar /app/reviews-0.0.1-SNAPSHOT.jar --spring.cloud.polaris.address="grpc://127.0.0.1:8091"
+          name: reviews
+          image: ccr.ccs.tencentyun.com/polaris_mesh/reviews:0.1.7
+          imagePullPolicy: Always
+          env:
+            - name: LOG_DIR
+              value: "/tmp/logs"
+            - name: ENABLE_RATINGS
+              value: "true"
+            - name: STAR_COLOR
+              value: blue
+          ports:
+            - containerPort: 9080
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: wlp-output
+              mountPath: /opt/ibm/wlp/output
+          securityContext:
+            runAsUser: 1000
       volumes:
-      - name: wlp-output
-        emptyDir: {}
-      - name: tmp
-        emptyDir: {}
+        - name: wlp-output
+          emptyDir: {}
+        - name: tmp
+          emptyDir: {}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -279,41 +279,41 @@ spec:
   template:
     metadata:
       annotations:
-        sidecar.istio.io/inject: "false"
+        sidecar.polarismesh.cn/inject: "false"
       labels:
         app: reviews
         version: v3
     spec:
       serviceAccountName: bookinfo-reviews
       containers:
-      - command:
-        - /bin/bash
-        - -c
-        - java -jar /app/reviews-0.0.1-SNAPSHOT.jar --spring.cloud.polaris.address="grpc://127.0.0.1:8090"
-        name: reviews
-        image: ccr.ccs.tencentyun.com/polaris_mesh/reviews:0.1.7
-        imagePullPolicy: IfNotPresent
-        env:
-        - name: LOG_DIR
-          value: "/tmp/logs"
-        - name: ENABLE_RATINGS
-          value: "true"
-        - name: STAR_COLOR
-          value: green
-        ports:
-        - containerPort: 9080
-        volumeMounts:
-        - name: tmp
-          mountPath: /tmp
-        - name: wlp-output
-          mountPath: /opt/ibm/wlp/output
-        securityContext:
-          runAsUser: 1000
+        - command:
+            - /bin/bash
+            - -c
+            - java -jar /app/reviews-0.0.1-SNAPSHOT.jar --spring.cloud.polaris.address="grpc://127.0.0.1:8091"
+          name: reviews
+          image: ccr.ccs.tencentyun.com/polaris_mesh/reviews:0.1.7
+          imagePullPolicy: Always
+          env:
+            - name: LOG_DIR
+              value: "/tmp/logs"
+            - name: ENABLE_RATINGS
+              value: "true"
+            - name: STAR_COLOR
+              value: green
+          ports:
+            - containerPort: 9080
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: wlp-output
+              mountPath: /opt/ibm/wlp/output
+          securityContext:
+            runAsUser: 1000
       volumes:
-      - name: wlp-output
-        emptyDir: {}
-      - name: tmp
-        emptyDir: {}
+        - name: wlp-output
+          emptyDir: {}
+        - name: tmp
+          emptyDir: {}
 ---
 ##################################################################################################
 # Productpage services
@@ -327,8 +327,8 @@ metadata:
     service: productpage
 spec:
   ports:
-  - port: 9080
-    name: http
+    - port: 9080
+      name: http
   selector:
     app: productpage
 ---
@@ -360,18 +360,18 @@ spec:
     spec:
       serviceAccountName: bookinfo-productpage
       containers:
-      - name: productpage
-        image: docker.io/istio/examples-bookinfo-productpage-v1:1.16.2
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 9080
-        volumeMounts:
-        - name: tmp
-          mountPath: /tmp
-        securityContext:
-          runAsUser: 1000
+        - name: productpage
+          image: docker.io/istio/examples-bookinfo-productpage-v1:1.16.2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9080
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          securityContext:
+            runAsUser: 1000
       volumes:
-      - name: tmp
-        emptyDir: {}
+        - name: tmp
+          emptyDir: {}
 ---
 

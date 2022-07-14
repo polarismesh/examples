@@ -26,9 +26,9 @@ import (
 	"time"
 
 	"dubbo.apache.org/dubbo-go/v3/config"
-	
-	_ "dubbo.apache.org/dubbo-go/v3/registry/polaris"
+
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/polaris"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
