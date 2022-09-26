@@ -13,7 +13,7 @@ apiVersion: v1
 data:
   envoy.yaml: |-
     node:
-      id: blue-green/60c543b9-df2e-4610-b057-2fef16a973bd~10.0.5.52
+      id: sct-gray-1/60c543b9-df2e-4610-b057-2fef16a973bd~10.0.5.52
       cluster: envoy-cluster
     dynamic_resources:
       lds_config:
