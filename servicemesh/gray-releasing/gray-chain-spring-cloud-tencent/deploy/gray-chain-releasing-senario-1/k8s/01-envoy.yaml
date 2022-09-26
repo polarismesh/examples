@@ -1,0 +1,106 @@
+#  Tencent is pleased to support the open source community by making Polaris available.
+#  Copyright (C) 2019 THL A29 Limited, a Tencent company. All rights reserved.
+#  Licensed under the BSD 3-Clause License (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#  https://opensource.org/licenses/BSD-3-Clause
+#  Unless required by applicable law or agreed to in writing, software distributed
+#  under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+#  CONDITIONS OF ANY KIND, either express or implied. See the License for the
+#  specific language governing permissions and limitations under the License.
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: envoy
+  namespace: envoy-test
+  labels:
+    app: envoy
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 15001
+    name: http
+    targetPort: 15001
+  - port: 15000
+    name: admin-http
+    targetPort: 15000
+  selector:
+    app: envoy
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: envoy
+  name: envoy
+  namespace: envoy-test
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  selector:
+    matchLabels:
+      app: envoy
+  serviceName: envoy
+  template:
+    metadata:
+      labels:
+        app: envoy
+    spec:
+      containers:
+      - image: polarismesh/polaris-sidecar:v1.3.0-beta.1
+        name: polaris-sidecar
+        imagePullPolicy: Always
+        command: ["/bin/sleep", "86400"]
+        resources:
+          limits:
+            cpu: "500m"
+            memory: 1000Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      - image: envoyproxy/envoy-contrib:v1.23.1
+        imagePullPolicy: Always
+        name: envoy
+        resources:
+          limits:
+            cpu: "500m"
+            memory: 1000Mi
+        command: ["envoy", "-c", "/etc/envoy/envoy.yaml", "-l", "debug"]
+        volumeMounts:
+        - mountPath: /etc/envoy/envoy.yaml
+          name: bootstrap-config
+          subPath: envoy.yaml
+        - mountPath: /etc/envoy_logs
+          name: envoy-logs
+          readOnly: false
+        - mountPath: /var/lib/data
+          name: bootstrap-config
+        - mountPath: /var/lib/xds/lds.yaml
+          name: lds-config
+          subPath: lds.yaml         
+        - mountPath: /var/lib/xds/cds.yaml
+          name: cds-config
+          subPath: cds.yaml          
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      volumes:
+      - name: envoy-logs
+        emptyDir: {}
+      - configMap:
+          defaultMode: 420
+          name: bootstrap-config
+        name: bootstrap-config
+      - configMap:
+          defaultMode: 420
+          name: lds-config
+        name: lds-config  
+      - configMap:
+          defaultMode: 420
+          name: cds-config
+        name: cds-config         
+      restartPolicy: Always
+  updateStrategy:
+    rollingUpdate:
+      partition: 0
+    type: RollingUpdate
