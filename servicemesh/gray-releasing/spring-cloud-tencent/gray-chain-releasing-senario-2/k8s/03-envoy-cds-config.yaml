@@ -1,0 +1,34 @@
+#  Tencent is pleased to support the open source community by making Polaris available.
+#  Copyright (C) 2019 THL A29 Limited, a Tencent company. All rights reserved.
+#  Licensed under the BSD 3-Clause License (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#  https://opensource.org/licenses/BSD-3-Clause
+#  Unless required by applicable law or agreed to in writing, software distributed
+#  under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+#  CONDITIONS OF ANY KIND, either express or implied. See the License for the
+#  specific language governing permissions and limitations under the License.
+
+apiVersion: v1
+data:
+  cds.yaml: |-
+    resources:
+    - "@type": type.googleapis.com/envoy.config.cluster.v3.Cluster
+      name: user
+      type: EDS
+      eds_cluster_config:
+        service_name: user
+        eds_config:
+          ads: {}
+          resource_api_version: V3
+      connect_timeout: 5s
+      lb_subset_config:
+        fallback_policy: ANY_ENDPOINT
+        subset_selectors:
+        - keys:
+          - version
+          fallback_policy: NO_FALLBACK          
+kind: ConfigMap
+metadata:
+  name: cds-config
+  namespace: envoy-test
