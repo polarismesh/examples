@@ -34,7 +34,7 @@ data:
                     route_config:
                       name: local_route
                       virtual_hosts:
-                        - nam e: base_service
+                        - name: base_service
                           domains:
                             - "base.service.com"
                           routes:

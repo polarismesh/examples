@@ -12,7 +12,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: sct-gray
+  name: sct-gray-2
 ---
 apiVersion: v1
 kind: Namespace
