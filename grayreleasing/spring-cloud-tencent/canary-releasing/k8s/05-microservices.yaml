@@ -12,8 +12,8 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: sct-gray-user
-  namespace: sct-gray-1
+  name: canary-user
+  namespace: canary
   labels:
     account: user
 ---
@@ -23,7 +23,7 @@ metadata:
   labels:
     app: user
   name: user-v1
-  namespace: sct-gray-1
+  namespace: canary
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -56,53 +56,7 @@ spec:
             - name: APP_VERSION
               value: v1.0.0
             - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
-              value: gray
-          resources:
-            limits:
-              cpu: "500m"
-              memory: 1000Mi
-      restartPolicy: Always
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: user
-  name: user-v2
-  namespace: sct-gray-1
-spec:
-  progressDeadlineSeconds: 600
-  replicas: 1
-  revisionHistoryLimit: 10
-  selector:
-    matchLabels:
-      app: user
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
-  template:
-    metadata:
-      annotations:
-        sidecar.polarismesh.cn/inject: "false"
-      labels:
-        app: user
-        version: v1.0.0
-    spec:
-      containers:
-        - image: polarismesh/sct-gray-releasing-user-v2:0.0.1-alpha.2
-          imagePullPolicy: Always
-          name: sct-gray-releasing-user-v2
-          env:
-            - name: APP_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-            - name: APP_VERSION
-              value: v2.0.0
-            - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
-              value: gray
+              value: uin
           resources:
             limits:
               cpu: "500m"
@@ -112,8 +66,8 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: sct-gray-credit
-  namespace: sct-gray-1
+  name: canary-credit
+  namespace: canary
   labels:
     account: credit
 ---
@@ -123,7 +77,7 @@ metadata:
   labels:
     app: credit
   name: credit-v1
-  namespace: sct-gray-1
+  namespace: canary
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -156,7 +110,53 @@ spec:
             - name: APP_VERSION
               value: v1.0.0
             - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
-              value: gray
+              value: uin
+          resources:
+            limits:
+              cpu: "500m"
+              memory: 1000Mi
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: credit
+  name: credit-v2
+  namespace: canary
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: credit
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        sidecar.polarismesh.cn/inject: "false"
+      labels:
+        app: credit
+        version: v2.0.0
+    spec:
+      containers:
+        - image: polarismesh/sct-gray-releasing-credit-v2:0.0.1-alpha.2
+          imagePullPolicy: Always
+          name: sct-gray-releasing-credit-v2
+          env:
+            - name: APP_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: APP_VERSION
+              value: v2.0.0
+            - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
+              value: uin
           resources:
             limits:
               cpu: "500m"
@@ -166,8 +166,8 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: sct-gray-promotion
-  namespace: sct-gray-1
+  name: canary-promotion
+  namespace: canary
   labels:
     account: promotion
 ---
@@ -177,7 +177,7 @@ metadata:
   labels:
     app: promotion
   name: promotion-v1
-  namespace: sct-gray-1
+  namespace: canary
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -210,53 +210,7 @@ spec:
             - name: APP_VERSION
               value: v1.0.0
             - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
-              value: gray
-          resources:
-            limits:
-              cpu: "500m"
-              memory: 1000Mi
-      restartPolicy: Always
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: promotion
-  name: promotion-v2
-  namespace: sct-gray-1
-spec:
-  progressDeadlineSeconds: 600
-  replicas: 1
-  revisionHistoryLimit: 10
-  selector:
-    matchLabels:
-      app: promotion
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
-  template:
-    metadata:
-      annotations:
-        sidecar.polarismesh.cn/inject: "false"
-      labels:
-        app: promotion
-        version: v2.0.0
-    spec:
-      containers:
-        - image: polarismesh/sct-gray-releasing-promotion-v2:0.0.1-alpha.2
-          imagePullPolicy: Always
-          name: sct-gray-releasing-promotion-v2
-          env:
-            - name: APP_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-            - name: APP_VERSION
-              value: v2.0.0
-            - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
-              value: gray
+              value: uin
           resources:
             limits:
               cpu: "500m"
