@@ -1,20 +1,13 @@
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: user
-  namespace: blue-green
-  labels:
-    app: user
-    service: user
-spec:
-  type: ClusterIP
-  ports:
-  - port: 11870
-    name: http
-    targetPort: 11870
-  selector:
-    app: user  
+#  Tencent is pleased to support the open source community by making Polaris available.
+#  Copyright (C) 2019 THL A29 Limited, a Tencent company. All rights reserved.
+#  Licensed under the BSD 3-Clause License (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#  https://opensource.org/licenses/BSD-3-Clause
+#  Unless required by applicable law or agreed to in writing, software distributed
+#  under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+#  CONDITIONS OF ANY KIND, either express or implied. See the License for the
+#  specific language governing permissions and limitations under the License.
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -45,18 +38,29 @@ spec:
     type: RollingUpdate
   template:
     metadata:
+      annotations:
+        sidecar.polarismesh.cn/inject: "false"
       labels:
         app: user
-        version: 1.0.0
+        version: v1.0.0
     spec:
       containers:
-      - image: polarismesh/sct-gray-releasing-user-v1:0.0.1-alpha.2
-        imagePullPolicy: Always
-        name: sct-gray-releasing-user-v1
-        resources:
-          limits:
-            cpu: "500m"
-            memory: 1000Mi
+        - image: polarismesh/sct-gray-releasing-user-v1:0.0.1-alpha.2
+          imagePullPolicy: Always
+          name: sct-gray-releasing-user-v1
+          env:
+            - name: APP_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: APP_VERSION
+              value: v1.0.0
+            - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
+              value: gray
+          resources:
+            limits:
+              cpu: "500m"
+              memory: 1000Mi
       restartPolicy: Always
 ---
 apiVersion: apps/v1
@@ -80,36 +84,30 @@ spec:
     type: RollingUpdate
   template:
     metadata:
+      annotations:
+        sidecar.polarismesh.cn/inject: "false"
       labels:
         app: user
-        version: 2.0.0
+        version: v2.0.0
     spec:
       containers:
-      - image: polarismesh/sct-gray-releasing-user-v2:0.0.1-alpha.2
-        imagePullPolicy: Always
-        name: sct-gray-releasing-user-v2
-        resources:
-          limits:
-            cpu: "500m"
-            memory: 1000Mi
+        - image: polarismesh/sct-gray-releasing-user-v1:0.0.1-alpha.2
+          imagePullPolicy: Always
+          name: sct-gray-releasing-user-v2
+          env:
+            - name: APP_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: APP_VERSION
+              value: v2.0.0
+            - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
+              value: gray
+          resources:
+            limits:
+              cpu: "500m"
+              memory: 1000Mi
       restartPolicy: Always
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: credit
-  namespace: blue-green
-  labels:
-    app: credit
-    service: user
-spec:
-  type: ClusterIP
-  ports:
-  - port: 11871
-    name: http
-    targetPort: 11871
-  selector:
-    app: credit
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -140,18 +138,29 @@ spec:
     type: RollingUpdate
   template:
     metadata:
+      annotations:
+        sidecar.polarismesh.cn/inject: "false"
       labels:
         app: credit
-        version: 1.0.0
+        version: v1.0.0
     spec:
       containers:
-      - image: polarismesh/sct-gray-releasing-credit-v1:0.0.1-alpha.2
-        imagePullPolicy: Always
-        name: sct-gray-releasing-credit-v1
-        resources:
-          limits:
-            cpu: "500m"
-            memory: 1000Mi
+        - image: polarismesh/sct-gray-releasing-credit-v1:0.0.1-alpha.2
+          imagePullPolicy: Always
+          name: sct-gray-releasing-credit-v1
+          env:
+            - name: APP_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: APP_VERSION
+              value: v1.0.0
+            - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
+              value: gray
+          resources:
+            limits:
+              cpu: "500m"
+              memory: 1000Mi
       restartPolicy: Always
 ---
 apiVersion: apps/v1
@@ -175,18 +184,29 @@ spec:
     type: RollingUpdate
   template:
     metadata:
+      annotations:
+        sidecar.polarismesh.cn/inject: "false"
       labels:
         app: credit
-        version: 2.0.0
+        version: v2.0.0
     spec:
       containers:
-      - image: polarismesh/sct-gray-releasing-credit-v2:0.0.1-alpha.2
-        imagePullPolicy: Always
-        name: sct-gray-releasing-credit-v2
-        resources:
-          limits:
-            cpu: "500m"
-            memory: 1000Mi
+        - image: polarismesh/sct-gray-releasing-credit-v2:0.0.1-alpha.2
+          imagePullPolicy: Always
+          name: sct-gray-releasing-credit-v2
+          env:
+            - name: APP_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: APP_VERSION
+              value: v2.0.0
+            - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
+              value: gray
+          resources:
+            limits:
+              cpu: "500m"
+              memory: 1000Mi
       restartPolicy: Always
 ---
 apiVersion: v1
@@ -196,23 +216,6 @@ metadata:
   namespace: blue-green
   labels:
     account: promotion
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: promotion
-  namespace: blue-green
-  labels:
-    app: promotion
-    service: user
-spec:
-  type: ClusterIP
-  ports:
-  - port: 11872
-    name: http
-    targetPort: 11872
-  selector:
-    app: promotion
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -235,18 +238,29 @@ spec:
     type: RollingUpdate
   template:
     metadata:
+      annotations:
+        sidecar.polarismesh.cn/inject: "false"
       labels:
         app: promotion
-        version: 1.0.0
+        version: v1.0.0
     spec:
       containers:
-      - image: polarismesh/sct-gray-releasing-promotion-v1:0.0.1-alpha.2
-        imagePullPolicy: Always
-        name: sct-gray-releasing-promotion-v1
-        resources:
-          limits:
-            cpu: "500m"
-            memory: 1000Mi
+        - image: polarismesh/sct-gray-releasing-promotion-v1:0.0.1-alpha.2
+          imagePullPolicy: Always
+          name: sct-gray-releasing-promotion-v1
+          env:
+            - name: APP_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: APP_VERSION
+              value: v1.0.0
+            - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
+              value: gray
+          resources:
+            limits:
+              cpu: "500m"
+              memory: 1000Mi
       restartPolicy: Always
 ---
 apiVersion: apps/v1
@@ -270,16 +284,29 @@ spec:
     type: RollingUpdate
   template:
     metadata:
+      annotations:
+        sidecar.polarismesh.cn/inject: "false"
       labels:
         app: promotion
-        version: 2.0.0
+        version: v2.0.0
     spec:
       containers:
-      - image: polarismesh/sct-gray-releasing-promotion-v2:0.0.1-alpha.2
-        imagePullPolicy: Always
-        name: sct-gray-releasing-promotion-v2
-        resources:
-          limits:
-            cpu: "500m"
-            memory: 1000Mi
-      restartPolicy: Always      
+        - image: polarismesh/sct-gray-releasing-promotion-v1:0.0.1-alpha.2
+          imagePullPolicy: Always
+          name: sct-gray-releasing-promotion-v2
+          env:
+            - name: APP_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: APP_VERSION
+              value: v2.0.0
+            - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
+              value: gray
+          resources:
+            limits:
+              cpu: "500m"
+              memory: 1000Mi
+      restartPolicy: Always
+
+

@@ -35,7 +35,7 @@ spec:
   template:
     metadata:
       annotations:
-        sidecar.polarismesh.cn/inject: true
+        sidecar.polarismesh.cn/inject: "false"
       labels:
         app: envoy
     spec:
