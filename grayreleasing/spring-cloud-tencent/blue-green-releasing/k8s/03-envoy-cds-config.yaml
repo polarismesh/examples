@@ -1,0 +1,23 @@
+apiVersion: v1
+data:
+  cds.yaml: |-
+    resources:
+    - "@type": type.googleapis.com/envoy.config.cluster.v3.Cluster
+      name: user
+      type: EDS
+      eds_cluster_config:
+        service_name: user
+        eds_config:
+          ads: {}
+          resource_api_version: V3
+      connect_timeout: 5s
+      lb_subset_config:
+        fallback_policy: ANY_ENDPOINT
+        subset_selectors:
+        - keys:
+          - version
+          fallback_policy: NO_FALLBACK          
+kind: ConfigMap
+metadata:
+  name: cds-config
+  namespace: sct-envoy-gw-blue-green
