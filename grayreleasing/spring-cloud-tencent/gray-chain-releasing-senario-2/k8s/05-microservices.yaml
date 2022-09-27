@@ -45,7 +45,7 @@ spec:
         version: v1.0.0
     spec:
       containers:
-        - image: polarismesh/sct-gray-releasing-user-v1:0.0.1-alpha.1
+        - image: polarismesh/sct-gray-releasing-user-v1:0.0.1-alpha.2
           imagePullPolicy: Always
           name: sct-gray-releasing-user-v1
           env:
@@ -91,7 +91,7 @@ spec:
         version: v1.0.0
     spec:
       containers:
-        - image: polarismesh/sct-gray-releasing-user-v2:0.0.1-alpha.1
+        - image: polarismesh/sct-gray-releasing-user-v2:0.0.1-alpha.2
           imagePullPolicy: Always
           name: sct-gray-releasing-user-v2
           env:
@@ -145,7 +145,7 @@ spec:
         version: v1.0.0
     spec:
       containers:
-        - image: polarismesh/sct-gray-releasing-credit-v1:0.0.1-alpha.1
+        - image: polarismesh/sct-gray-releasing-credit-v1:0.0.1-alpha.2
           imagePullPolicy: Always
           name: sct-gray-releasing-credit-v1
           env:
@@ -199,7 +199,7 @@ spec:
         version: v1.0.0
     spec:
       containers:
-        - image: polarismesh/sct-gray-releasing-promotion-v1:0.0.1-alpha.1
+        - image: polarismesh/sct-gray-releasing-promotion-v1:0.0.1-alpha.2
           imagePullPolicy: Always
           name: sct-gray-releasing-promotion-v1
           env:
@@ -245,7 +245,7 @@ spec:
         version: v2.0.0
     spec:
       containers:
-        - image: polarismesh/sct-gray-releasing-promotion-v2:0.0.1-alpha.1
+        - image: polarismesh/sct-gray-releasing-promotion-v2:0.0.1-alpha.2
           imagePullPolicy: Always
           name: sct-gray-releasing-promotion-v2
           env:

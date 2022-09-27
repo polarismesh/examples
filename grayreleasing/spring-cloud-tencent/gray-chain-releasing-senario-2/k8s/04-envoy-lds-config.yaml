@@ -66,4 +66,4 @@ data:
 kind: ConfigMap
 metadata:
   name: lds-config
-  namespace: envoy-test
+  namespace: sct-envoy-gw-gray-2

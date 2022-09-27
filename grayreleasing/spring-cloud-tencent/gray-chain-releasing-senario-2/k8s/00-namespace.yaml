@@ -17,4 +17,4 @@ metadata:
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: envoy-test  
+  name: sct-envoy-gw-gray-2
