@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: blue-green
+  name: blue-green-sct
 ---
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: sct-envoy-gw-blue-green
+#apiVersion: v1
+#kind: Namespace
+#metadata:
+#  name: sct-envoy-gw-blue-green

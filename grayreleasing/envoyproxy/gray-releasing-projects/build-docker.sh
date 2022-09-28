@@ -17,6 +17,16 @@ pushd "$SCRIPTDIR/"
 #java build the app.
 docker run --rm -u root -v "$(pwd)":/home/maven/project -w /home/maven/project maven:3.8.1-openjdk-8-slim mvn clean package
 
+pushd decorate-service
+TAG_NAME="${PREFIX}/examples-gray-releasing-decorate-v1:${VERSION}"
+docker build --pull -t "${TAG_NAME}" --build-arg pkg_version="${VERSION}" --build-arg logic_version="1.0.0" .
+docker push "${TAG_NAME}"
+
+TAG_NAME="${PREFIX}/examples-gray-releasing-decorate-v2:${VERSION}"
+docker build --pull -t "${TAG_NAME}" --build-arg pkg_version="${VERSION}" --build-arg logic_version="2.0.0" .
+docker push "${TAG_NAME}"
+popd
+
 pushd user-service
 TAG_NAME="${PREFIX}/examples-gray-releasing-user-v1:${VERSION}"
 docker build --pull -t "${TAG_NAME}" --build-arg pkg_version="${VERSION}" --build-arg logic_version="1.0.0" .

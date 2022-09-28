@@ -12,6 +12,7 @@
         <module>credit-service</module>
         <module>promotion-service</module>
         <module>common-core</module>
+        <module>decorate-service</module>
     </modules>
 
     <packaging>pom</packaging>

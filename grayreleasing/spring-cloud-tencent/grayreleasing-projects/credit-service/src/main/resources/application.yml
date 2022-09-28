@@ -23,7 +23,7 @@ spring:
           enabled: true
 
     polaris:
-      address: ${POLARIS_SERVER_GRPC_ADDRESS:grpc://polaris.polaris-system:8091}
+      address: ${POLARIS_SERVER_GRPC_ADDRESS:grpc://183.47.111.80:8091}
       discovery:
         namespace: ${APP_NAMESPACE:default}
         enabled: true
