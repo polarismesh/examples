@@ -25,7 +25,7 @@
     <artifactId>polaris-mesh-sct-demo</artifactId>
 
     <properties>
-        <revision>0.0.1-alpha.1</revision>
+        <revision>0.0.1-alpha.3</revision>
         <sct.version>1.8.0-2021.0.3-SNAPSHOT</sct.version>
     </properties>
 
