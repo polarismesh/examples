@@ -10,17 +10,13 @@
 #  specific language governing permissions and limitations under the License.
 
 server:
-  port: ${USER_SERVER_PORT:10010}
+  port: ${DECORATE_SERVER_PORT:10008}
 
 spring:
   application:
-    name: user
+    name: decorate
 
   cloud:
-    tencent:
-      rpc-enhancement:
-        reporter:
-          enabled: true
     polaris:
       address: ${POLARIS_SERVER_GRPC_ADDRESS:grpc://183.47.111.80:8091}
       discovery:

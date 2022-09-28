@@ -16,6 +16,7 @@
         <module>user-service</module>
         <module>credit-service</module>
         <module>promotion-service</module>
+        <module>decorate-service</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -27,6 +28,36 @@
     <properties>
         <revision>0.0.1-alpha.3</revision>
         <sct.version>1.8.0-2021.0.3-SNAPSHOT</sct.version>
+        <maven.flatten.plugin.version>1.2.5</maven.flatten.plugin.version>
     </properties>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${maven.flatten.plugin.version}</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

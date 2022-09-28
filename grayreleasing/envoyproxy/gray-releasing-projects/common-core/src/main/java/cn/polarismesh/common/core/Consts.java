@@ -21,7 +21,11 @@ public interface Consts {
 
     String ENV_VERSION = "VERSION";
 
+    String ENV_GRAY = "GRAY";
+
     String DEFAULT_VERSION = "1.0.0";
+
+    int PORT_DECORATE = 11869;
 
     int PORT_USER = 11870;
 

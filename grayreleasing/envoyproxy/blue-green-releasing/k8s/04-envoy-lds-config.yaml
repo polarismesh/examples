@@ -50,4 +50,4 @@ data:
 kind: ConfigMap
 metadata:
   name: lds-config
-  namespace: blue-green
+  namespace: blue-green-envoyproxy

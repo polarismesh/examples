@@ -21,18 +21,28 @@ public class InitOptions {
 
     private final String version;
 
-    public InitOptions(String version) {
+    private final String gray;
+
+    public InitOptions(String version, String gray) {
         this.version = version;
+        this.gray = gray;
     }
 
     public String getVersion() {
         return version;
     }
 
+    public String getGray() {
+        return gray;
+    }
+
     @Override
     public String toString() {
         return "InitOptions{" +
                 "version='" + version + '\'' +
+                ", gray='" + gray + '\'' +
                 '}';
     }
+
+
 }

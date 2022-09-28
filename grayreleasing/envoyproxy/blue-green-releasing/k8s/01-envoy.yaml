@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: envoy
-  namespace: blue-green
+  namespace: blue-green-envoyproxy
   labels:
     app: envoy
 spec:
@@ -24,7 +24,7 @@ metadata:
   labels:
     app: envoy
   name: envoy
-  namespace: blue-green
+  namespace: blue-green-envoyproxy
 spec:
   podManagementPolicy: OrderedReady
   replicas: 1
@@ -35,7 +35,7 @@ spec:
   template:
     metadata:
       annotations:
-        sidecar.polarismesh.cn/inject: true
+        sidecar.polarismesh.cn/inject: false
       labels:
         app: envoy
     spec:

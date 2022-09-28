@@ -38,13 +38,20 @@ public class Utils {
         CommandLineParser parser = new DefaultParser();
         Options options = new Options();
         options.addOption("version", "version", true, "project version");
+        options.addOption("gray", "gray", true, "project gray");
 
         CommandLine commandLine = parser.parse(options, args);
         String version = commandLine.getOptionValue("version");
         if (null == version) {
             version = System.getenv(Consts.ENV_VERSION);
         }
-        return new InitOptions(version);
+
+        String gray = commandLine.getOptionValue("gray");
+        if (null == gray) {
+            gray = System.getenv(Consts.ENV_GRAY);
+        }
+
+        return new InitOptions(version, gray);
     }
 
     public static HttpResult httpGet(String urlStr, Headers headers) {
@@ -64,7 +71,7 @@ public class Utils {
             bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             respMessage = bufferedReader.readLine();
 
-        } catch (IOException e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             respMessage = e.getMessage();
         } finally {
