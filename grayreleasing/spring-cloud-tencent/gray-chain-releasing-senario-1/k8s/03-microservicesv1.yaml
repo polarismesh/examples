@@ -12,8 +12,62 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: canary-user
-  namespace: canary-sct
+  name: sct-gray-decorate
+  namespace: gray-chain-sct-1
+  labels:
+    account: decorate
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: decorate
+  name: decorate-v1
+  namespace: gray-chain-sct-1
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: decorate
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        sidecar.polarismesh.cn/inject: "false"
+      labels:
+        app: decorate
+        version: v1.0.0
+    spec:
+      containers:
+        - image: polarismesh/sct-gray-releasing-decorate-v1:0.0.1-alpha.3
+          imagePullPolicy: Always
+          name: sct-gray-releasing-decorate-v1
+          env:
+            - name: APP_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: APP_VERSION
+              value: v1.0.0
+            - name: POLARIS_SERVER_GRPC_ADDRESS
+              value: grpc://polaris.polaris-system:8091
+          resources:
+            limits:
+              cpu: "500m"
+              memory: 1000Mi
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sct-gray-user
+  namespace: gray-chain-sct-1
   labels:
     account: user
 ---
@@ -23,7 +77,7 @@ metadata:
   labels:
     app: user
   name: user-v1
-  namespace: canary-sct
+  namespace: gray-chain-sct-1
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -56,9 +110,9 @@ spec:
             - name: APP_VERSION
               value: v1.0.0
             - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
-              value: uid
+              value: gray
             - name: POLARIS_SERVER_GRPC_ADDRESS
-              value: grpc://polaris.polaris-system:8091
+              value: grpc://polaris.polaris-system:8091  
           resources:
             limits:
               cpu: "500m"
@@ -68,8 +122,8 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: canary-credit
-  namespace: canary-sct
+  name: sct-gray-credit
+  namespace: gray-chain-sct-1
   labels:
     account: credit
 ---
@@ -79,7 +133,7 @@ metadata:
   labels:
     app: credit
   name: credit-v1
-  namespace: canary-sct
+  namespace: gray-chain-sct-1
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -112,55 +166,7 @@ spec:
             - name: APP_VERSION
               value: v1.0.0
             - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
-              value: uid
-            - name: POLARIS_SERVER_GRPC_ADDRESS
-              value: grpc://polaris.polaris-system:8091  
-          resources:
-            limits:
-              cpu: "500m"
-              memory: 1000Mi
-      restartPolicy: Always
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: credit
-  name: credit-v2
-  namespace: canary-sct
-spec:
-  progressDeadlineSeconds: 600
-  replicas: 1
-  revisionHistoryLimit: 10
-  selector:
-    matchLabels:
-      app: credit
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
-  template:
-    metadata:
-      annotations:
-        sidecar.polarismesh.cn/inject: "false"
-      labels:
-        app: credit
-        version: v2.0.0
-    spec:
-      containers:
-        - image: polarismesh/sct-gray-releasing-credit-v2:0.0.1-alpha.3
-          imagePullPolicy: Always
-          name: sct-gray-releasing-credit-v2
-          env:
-            - name: APP_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-            - name: APP_VERSION
-              value: v2.0.0
-            - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
-              value: uid
+              value: gray
             - name: POLARIS_SERVER_GRPC_ADDRESS
               value: grpc://polaris.polaris-system:8091  
           resources:
@@ -172,8 +178,8 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: canary-promotion
-  namespace: canary-sct
+  name: sct-gray-promotion
+  namespace: gray-chain-sct-1
   labels:
     account: promotion
 ---
@@ -183,7 +189,7 @@ metadata:
   labels:
     app: promotion
   name: promotion-v1
-  namespace: canary-sct
+  namespace: gray-chain-sct-1
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -216,7 +222,7 @@ spec:
             - name: APP_VERSION
               value: v1.0.0
             - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
-              value: uid
+              value: gray
             - name: POLARIS_SERVER_GRPC_ADDRESS
               value: grpc://polaris.polaris-system:8091  
           resources:
@@ -224,4 +230,3 @@ spec:
               cpu: "500m"
               memory: 1000Mi
       restartPolicy: Always
-

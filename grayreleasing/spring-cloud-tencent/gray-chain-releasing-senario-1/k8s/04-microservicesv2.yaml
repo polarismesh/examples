@@ -9,28 +9,20 @@
 #  CONDITIONS OF ANY KIND, either express or implied. See the License for the
 #  specific language governing permissions and limitations under the License.
 ---
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: sct-gray-user
-  namespace: gray-chain-sct-2
-  labels:
-    account: user
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: user
-  name: user-v1
-  namespace: gray-chain-sct-2
+    app: decorate
+  name: decorate-v2
+  namespace: gray-chain-sct-1
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: user
+      app: decorate
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -41,29 +33,37 @@ spec:
       annotations:
         sidecar.polarismesh.cn/inject: "false"
       labels:
-        app: user
-        version: v1.0.0
+        app: decorate
+        version: v2.0.0
     spec:
       containers:
-        - image: polarismesh/sct-gray-releasing-user-v1:0.0.1-alpha.3
+        - image: polarismesh/sct-gray-releasing-decorate-v1:0.0.1-alpha.3
           imagePullPolicy: Always
-          name: sct-gray-releasing-user-v1
+          name: sct-gray-releasing-decorate-v2
           env:
+            - name: GRAY
+              value: "true"
             - name: APP_NAMESPACE
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: APP_VERSION
-              value: v1.0.0
-            - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
-              value: uid
+              value: v2.0.0
             - name: POLARIS_SERVER_GRPC_ADDRESS
-              value: grpc://polaris.polaris-system:8091  
+              value: grpc://polaris.polaris-system:8091
           resources:
             limits:
               cpu: "500m"
               memory: 1000Mi
       restartPolicy: Always
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sct-gray-user
+  namespace: gray-chain-sct-1
+  labels:
+    account: user
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -71,7 +71,7 @@ metadata:
   labels:
     app: user
   name: user-v2
-  namespace: gray-chain-sct-2
+  namespace: gray-chain-sct-1
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -104,119 +104,7 @@ spec:
             - name: APP_VERSION
               value: v2.0.0
             - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
-              value: uid
-            - name: POLARIS_SERVER_GRPC_ADDRESS
-              value: grpc://polaris.polaris-system:8091  
-          resources:
-            limits:
-              cpu: "500m"
-              memory: 1000Mi
-      restartPolicy: Always
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: sct-gray-credit
-  namespace: gray-chain-sct-2
-  labels:
-    account: credit
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: credit
-  name: credit-v1
-  namespace: gray-chain-sct-2
-spec:
-  progressDeadlineSeconds: 600
-  replicas: 1
-  revisionHistoryLimit: 10
-  selector:
-    matchLabels:
-      app: credit
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
-  template:
-    metadata:
-      annotations:
-        sidecar.polarismesh.cn/inject: "false"
-      labels:
-        app: credit
-        version: v1.0.0
-    spec:
-      containers:
-        - image: polarismesh/sct-gray-releasing-credit-v1:0.0.1-alpha.3
-          imagePullPolicy: Always
-          name: sct-gray-releasing-credit-v1
-          env:
-            - name: APP_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-            - name: APP_VERSION
-              value: v1.0.0
-            - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
-              value: uid
-            - name: POLARIS_SERVER_GRPC_ADDRESS
-              value: grpc://polaris.polaris-system:8091  
-          resources:
-            limits:
-              cpu: "500m"
-              memory: 1000Mi
-      restartPolicy: Always
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: sct-gray-promotion
-  namespace: gray-chain-sct-2
-  labels:
-    account: promotion
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: promotion
-  name: promotion-v1
-  namespace: gray-chain-sct-2
-spec:
-  progressDeadlineSeconds: 600
-  replicas: 1
-  revisionHistoryLimit: 10
-  selector:
-    matchLabels:
-      app: promotion
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
-  template:
-    metadata:
-      annotations:
-        sidecar.polarismesh.cn/inject: "false"
-      labels:
-        app: promotion
-        version: v1.0.0
-    spec:
-      containers:
-        - image: polarismesh/sct-gray-releasing-promotion-v1:0.0.1-alpha.3
-          imagePullPolicy: Always
-          name: sct-gray-releasing-promotion-v1
-          env:
-            - name: APP_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-            - name: APP_VERSION
-              value: v1.0.0
-            - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
-              value: uid
+              value: gray
             - name: POLARIS_SERVER_GRPC_ADDRESS
               value: grpc://polaris.polaris-system:8091  
           resources:
@@ -231,7 +119,7 @@ metadata:
   labels:
     app: promotion
   name: promotion-v2
-  namespace: gray-chain-sct-2
+  namespace: gray-chain-sct-1
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -264,7 +152,7 @@ spec:
             - name: APP_VERSION
               value: v2.0.0
             - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
-              value: uid
+              value: gray
             - name: POLARIS_SERVER_GRPC_ADDRESS
               value: grpc://polaris.polaris-system:8091  
           resources:
@@ -272,4 +160,3 @@ spec:
               cpu: "500m"
               memory: 1000Mi
       restartPolicy: Always
-

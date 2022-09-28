@@ -1,0 +1,119 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bootstrap-config
+  namespace: sct-envoy-gw-blue-green
+data:
+  envoy.yaml: |-
+    node:
+      id: blue-green/60c543b9-df2e-4610-b057-2fef16a973bd~10.0.5.52
+      cluster: envoy-cluster
+    dynamic_resources:
+      lds_config:
+        resource_api_version: V3
+        path_config_source:
+          path: /var/lib/xds/lds.yaml
+      cds_config:
+        resource_api_version: V3
+        path_config_source:
+          path: /var/lib/xds/cds.yaml
+      ads_config:
+        api_type: GRPC
+        transport_api_version: V3
+        grpc_services:
+        - google_grpc:
+            target_uri: "polaris.polaris-system:15010"
+            stat_prefix: polarismesh
+            channel_args:
+              args:
+                grpc.http2.max_pings_without_data:
+                  int_value: 1
+                grpc.keepalive_time_ms:
+                  int_value: 10000
+                grpc.keepalive_timeout_ms:
+                  int_value: 20000
+    admin:
+      access_log_path: /dev/stdout
+      address:
+        socket_address:
+          address: 0.0.0.0
+          port_value: 15000
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cds-config
+  namespace: sct-envoy-gw-blue-green
+data:
+  cds.yaml: |-
+    resources:
+    - "@type": type.googleapis.com/envoy.config.cluster.v3.Cluster
+      name: user
+      type: EDS
+      eds_cluster_config:
+        service_name: user
+        eds_config:
+          ads: {}
+          resource_api_version: V3
+      connect_timeout: 5s
+      lb_subset_config:
+        fallback_policy: ANY_ENDPOINT
+        subset_selectors:
+        - keys:
+          - version
+          fallback_policy: NO_FALLBACK
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: lds-config
+  namespace: sct-envoy-gw-blue-green
+data:
+  lds.yaml: |-
+    resources:
+    - "@type": type.googleapis.com/envoy.config.listener.v3.Listener
+      name: listener_15001
+      address:
+        socket_address:
+          address: 0.0.0.0
+          port_value: 15001
+      filter_chains:
+      - filters:
+        - name: envoy.http_connection_manager
+          typed_config:
+            "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+            stat_prefix: http
+            http_filters:
+            - name: envoy.router
+              typed_config:
+                "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
+            route_config:
+              name: local_route
+              virtual_hosts:
+              - name: local_service
+                domains:
+                - "*"
+                routes:              
+                - match:
+                    prefix: "/"
+                  route:
+                    weighted_clusters:
+                      total_weight: 100
+                      clusters:
+                      - name: user
+                        weight: 80
+                        metadata_match:
+                          filter_metadata:
+                            envoy.lb:
+                              version: v1.0.0
+                      - name: user
+                        weight: 20
+                        request_headers_to_add:
+                        - header:
+                            key: gray
+                            value: "true"
+                        metadata_match:
+                          filter_metadata:
+                            envoy.lb:
+                              version: v2.0.0

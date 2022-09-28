@@ -59,44 +59,6 @@ spec:
             memory: 1000Mi
       restartPolicy: Always
 ---
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: decorate
-  name: decorate-v2
-  namespace: blue-green-envoyproxy
-spec:
-  progressDeadlineSeconds: 600
-  replicas: 1
-  revisionHistoryLimit: 10
-  selector:
-    matchLabels:
-      app: decorate
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
-  template:
-    metadata:
-      labels:
-        app: decorate
-        version: 2.0.0
-    spec:
-      containers:
-      - image: polarismesh/examples-gray-releasing-decorate-v2:0.0.1-alpha.1
-        imagePullPolicy: Always
-        name: examples-gray-releasing-decorate-v2
-        env:
-        - name: GRAY
-          value: "true"
-        resources:
-          limits:
-            cpu: "500m"
-            memory: 1000Mi
-      restartPolicy: Always
----
 apiVersion: v1
 kind: Service
 metadata:
@@ -151,41 +113,6 @@ spec:
       - image: polarismesh/examples-gray-releasing-user-v1:0.0.1-alpha.1
         imagePullPolicy: Always
         name: examples-gray-releasing-user-v1
-        resources:
-          limits:
-            cpu: "500m"
-            memory: 1000Mi
-      restartPolicy: Always
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: user
-  name: user-v2
-  namespace: blue-green-envoyproxy
-spec:
-  progressDeadlineSeconds: 600
-  replicas: 1
-  revisionHistoryLimit: 10
-  selector:
-    matchLabels:
-      app: user
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
-  template:
-    metadata:
-      labels:
-        app: user
-        version: 2.0.0
-    spec:
-      containers:
-      - image: polarismesh/examples-gray-releasing-user-v2:0.0.1-alpha.1
-        imagePullPolicy: Always
-        name: examples-gray-releasing-user-v2
         resources:
           limits:
             cpu: "500m"
@@ -252,41 +179,6 @@ spec:
             memory: 1000Mi
       restartPolicy: Always
 ---
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: credit
-  name: credit-v2
-  namespace: blue-green-envoyproxy
-spec:
-  progressDeadlineSeconds: 600
-  replicas: 1
-  revisionHistoryLimit: 10
-  selector:
-    matchLabels:
-      app: credit
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
-  template:
-    metadata:
-      labels:
-        app: credit
-        version: 2.0.0
-    spec:
-      containers:
-      - image: polarismesh/examples-gray-releasing-credit-v2:0.0.1-alpha.1
-        imagePullPolicy: Always
-        name: examples-gray-releasing-credit-v2
-        resources:
-          limits:
-            cpu: "500m"
-            memory: 1000Mi
-      restartPolicy: Always
----
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -346,38 +238,3 @@ spec:
             cpu: "500m"
             memory: 1000Mi
       restartPolicy: Always
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: promotion
-  name: promotion-v2
-  namespace: blue-green-envoyproxy
-spec:
-  progressDeadlineSeconds: 600
-  replicas: 1
-  revisionHistoryLimit: 10
-  selector:
-    matchLabels:
-      app: promotion
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
-  template:
-    metadata:
-      labels:
-        app: promotion
-        version: 2.0.0
-    spec:
-      containers:
-      - image: polarismesh/examples-gray-releasing-promotion-v2:0.0.1-alpha.1
-        imagePullPolicy: Always
-        name: examples-gray-releasing-promotion-v2
-        resources:
-          limits:
-            cpu: "500m"
-            memory: 1000Mi
-      restartPolicy: Always      
