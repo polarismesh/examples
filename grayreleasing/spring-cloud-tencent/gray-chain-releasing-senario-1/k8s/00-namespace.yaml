@@ -12,9 +12,4 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: sct-gray-1
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: sct-envoy-gw-gray-1
+  name: gray-chain-sct-1

@@ -20,4 +20,4 @@ data:
 kind: ConfigMap
 metadata:
   name: cds-config
-  namespace: envoy-test
+  namespace: gray-chain-envoyproxy-2

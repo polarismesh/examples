@@ -32,4 +32,4 @@ data:
 kind: ConfigMap
 metadata:
   name: lds-config
-  namespace: sct-envoy-gw-canary
+  namespace: canary-sct

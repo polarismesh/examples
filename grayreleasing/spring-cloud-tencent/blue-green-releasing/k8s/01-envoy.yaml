@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: envoy
-  namespace: sct-envoy-gw-blue-green
+  namespace: blue-green-sct
   labels:
     app: envoy
 spec:
@@ -24,7 +24,7 @@ metadata:
   labels:
     app: envoy
   name: envoy
-  namespace: sct-envoy-gw-blue-green
+  namespace: blue-green-sct
 spec:
   podManagementPolicy: OrderedReady
   replicas: 1

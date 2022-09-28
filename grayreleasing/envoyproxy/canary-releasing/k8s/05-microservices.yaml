@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: user
-  namespace: blue-green
+  namespace: canary-envoyproxy
   labels:
     app: user
     service: user
@@ -19,8 +19,8 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: blue-green-user
-  namespace: blue-green
+  name: canary-user
+  namespace: canary-envoyproxy
   labels:
     account: user
 ---
@@ -30,7 +30,7 @@ metadata:
   labels:
     app: user
   name: user-v1
-  namespace: blue-green
+  namespace: canary-envoyproxy
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -63,7 +63,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: credit
-  namespace: blue-green
+  namespace: canary-envoyproxy
   labels:
     app: credit
     service: user
@@ -79,8 +79,8 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: blue-green-credit
-  namespace: blue-green
+  name: canary-credit
+  namespace: canary-envoyproxy
   labels:
     account: credit
 ---
@@ -90,7 +90,7 @@ metadata:
   labels:
     app: credit
   name: credit-v1
-  namespace: blue-green
+  namespace: canary-envoyproxy
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -125,7 +125,7 @@ metadata:
   labels:
     app: credit
   name: credit-v2
-  namespace: blue-green
+  namespace: canary-envoyproxy
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -157,8 +157,8 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: blue-green-promotion
-  namespace: blue-green
+  name: canary-promotion
+  namespace: canary-envoyproxy
   labels:
     account: promotion
 ---
@@ -166,7 +166,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: promotion
-  namespace: blue-green
+  namespace: canary-envoyproxy
   labels:
     app: promotion
     service: user
@@ -185,7 +185,7 @@ metadata:
   labels:
     app: promotion
   name: promotion-v1
-  namespace: blue-green
+  namespace: canary-envoyproxy
 spec:
   progressDeadlineSeconds: 600
   replicas: 1

@@ -55,6 +55,8 @@ spec:
                   fieldPath: metadata.namespace
             - name: APP_VERSION
               value: v1.0.0
+            - name: POLARIS_SERVER_GRPC_ADDRESS
+              value: grpc://polaris.polaris-system:8091
           resources:
             limits:
               cpu: "500m"
@@ -101,6 +103,8 @@ spec:
                   fieldPath: metadata.namespace
             - name: APP_VERSION
               value: v2.0.0
+            - name: POLARIS_SERVER_GRPC_ADDRESS
+              value: grpc://polaris.polaris-system:8091
           resources:
             limits:
               cpu: "500m"
@@ -153,8 +157,10 @@ spec:
                   fieldPath: metadata.namespace
             - name: APP_VERSION
               value: v1.0.0
-            - name: SCT_TRAFFIC_CONTENT_RAW_TRANSHEADERS
+            - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
               value: gray
+            - name: POLARIS_SERVER_GRPC_ADDRESS
+              value: grpc://polaris.polaris-system:8091
           resources:
             limits:
               cpu: "500m"
@@ -199,8 +205,10 @@ spec:
                   fieldPath: metadata.namespace
             - name: APP_VERSION
               value: v2.0.0
-            - name: SCT_TRAFFIC_CONTENT_RAW_TRANSHEADERS
+            - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
               value: gray
+            - name: POLARIS_SERVER_GRPC_ADDRESS
+              value: grpc://polaris.polaris-system:8091
           resources:
             limits:
               cpu: "500m"
@@ -253,8 +261,10 @@ spec:
                   fieldPath: metadata.namespace
             - name: APP_VERSION
               value: v1.0.0
-            - name: SCT_TRAFFIC_CONTENT_RAW_TRANSHEADERS
+            - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
               value: gray
+            - name: POLARIS_SERVER_GRPC_ADDRESS
+              value: grpc://polaris.polaris-system:8091
           resources:
             limits:
               cpu: "500m"
@@ -299,8 +309,10 @@ spec:
                   fieldPath: metadata.namespace
             - name: APP_VERSION
               value: v2.0.0
-            - name: SCT_TRAFFIC_CONTENT_RAW_TRANSHEADERS
+            - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
               value: gray
+            - name: POLARIS_SERVER_GRPC_ADDRESS
+              value: grpc://polaris.polaris-system:8091
           resources:
             limits:
               cpu: "500m"
@@ -353,8 +365,10 @@ spec:
                   fieldPath: metadata.namespace
             - name: APP_VERSION
               value: v1.0.0
-            - name: SCT_TRAFFIC_CONTENT_RAW_TRANSHEADERS
+            - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
               value: gray
+            - name: POLARIS_SERVER_GRPC_ADDRESS
+              value: grpc://polaris.polaris-system:8091
           resources:
             limits:
               cpu: "500m"
@@ -399,8 +413,10 @@ spec:
                   fieldPath: metadata.namespace
             - name: APP_VERSION
               value: v2.0.0
-            - name: SCT_TRAFFIC_CONTENT_RAW_TRANSHEADERS
+            - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
               value: gray
+            - name: POLARIS_SERVER_GRPC_ADDRESS
+              value: grpc://polaris.polaris-system:8091 
           resources:
             limits:
               cpu: "500m"
