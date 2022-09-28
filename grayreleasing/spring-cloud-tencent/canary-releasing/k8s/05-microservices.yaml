@@ -13,7 +13,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: canary-user
-  namespace: canary
+  namespace: canary-sct
   labels:
     account: user
 ---
@@ -23,7 +23,7 @@ metadata:
   labels:
     app: user
   name: user-v1
-  namespace: canary
+  namespace: canary-sct
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -45,7 +45,7 @@ spec:
         version: v1.0.0
     spec:
       containers:
-        - image: polarismesh/sct-gray-releasing-user-v1:0.0.1-alpha.2
+        - image: polarismesh/sct-gray-releasing-user-v1:0.0.1-alpha.3
           imagePullPolicy: Always
           name: sct-gray-releasing-user-v1
           env:
@@ -56,7 +56,9 @@ spec:
             - name: APP_VERSION
               value: v1.0.0
             - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
-              value: uin
+              value: uid
+            - name: POLARIS_SERVER_GRPC_ADDRESS
+              value: grpc://polaris.polaris-system:8091
           resources:
             limits:
               cpu: "500m"
@@ -67,7 +69,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: canary-credit
-  namespace: canary
+  namespace: canary-sct
   labels:
     account: credit
 ---
@@ -77,7 +79,7 @@ metadata:
   labels:
     app: credit
   name: credit-v1
-  namespace: canary
+  namespace: canary-sct
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -99,7 +101,7 @@ spec:
         version: v1.0.0
     spec:
       containers:
-        - image: polarismesh/sct-gray-releasing-credit-v1:0.0.1-alpha.2
+        - image: polarismesh/sct-gray-releasing-credit-v1:0.0.1-alpha.3
           imagePullPolicy: Always
           name: sct-gray-releasing-credit-v1
           env:
@@ -110,7 +112,9 @@ spec:
             - name: APP_VERSION
               value: v1.0.0
             - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
-              value: uin
+              value: uid
+            - name: POLARIS_SERVER_GRPC_ADDRESS
+              value: grpc://polaris.polaris-system:8091  
           resources:
             limits:
               cpu: "500m"
@@ -123,7 +127,7 @@ metadata:
   labels:
     app: credit
   name: credit-v2
-  namespace: canary
+  namespace: canary-sct
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -145,7 +149,7 @@ spec:
         version: v2.0.0
     spec:
       containers:
-        - image: polarismesh/sct-gray-releasing-credit-v2:0.0.1-alpha.2
+        - image: polarismesh/sct-gray-releasing-credit-v2:0.0.1-alpha.3
           imagePullPolicy: Always
           name: sct-gray-releasing-credit-v2
           env:
@@ -156,7 +160,9 @@ spec:
             - name: APP_VERSION
               value: v2.0.0
             - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
-              value: uin
+              value: uid
+            - name: POLARIS_SERVER_GRPC_ADDRESS
+              value: grpc://polaris.polaris-system:8091  
           resources:
             limits:
               cpu: "500m"
@@ -167,7 +173,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: canary-promotion
-  namespace: canary
+  namespace: canary-sct
   labels:
     account: promotion
 ---
@@ -177,7 +183,7 @@ metadata:
   labels:
     app: promotion
   name: promotion-v1
-  namespace: canary
+  namespace: canary-sct
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -199,7 +205,7 @@ spec:
         version: v1.0.0
     spec:
       containers:
-        - image: polarismesh/sct-gray-releasing-promotion-v1:0.0.1-alpha.2
+        - image: polarismesh/sct-gray-releasing-promotion-v1:0.0.1-alpha.3
           imagePullPolicy: Always
           name: sct-gray-releasing-promotion-v1
           env:
@@ -210,7 +216,9 @@ spec:
             - name: APP_VERSION
               value: v1.0.0
             - name: SCT_METADATA_CONTENT_RAW_TRANSHEADERS
-              value: uin
+              value: uid
+            - name: POLARIS_SERVER_GRPC_ADDRESS
+              value: grpc://polaris.polaris-system:8091  
           resources:
             limits:
               cpu: "500m"

@@ -48,4 +48,4 @@ data:
 kind: ConfigMap
 metadata:
   name: bootstrap-config
-  namespace: sct-envoy-gw-gray-1
+  namespace: gray-chain-sct-1

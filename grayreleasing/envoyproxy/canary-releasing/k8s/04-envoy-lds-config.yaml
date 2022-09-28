@@ -32,4 +32,4 @@ data:
 kind: ConfigMap
 metadata:
   name: lds-config
-  namespace: envoy-test
+  namespace: canary-envoyproxy

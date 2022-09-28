@@ -31,4 +31,4 @@ data:
 kind: ConfigMap
 metadata:
   name: cds-config
-  namespace: sct-envoy-gw-gray-2
+  namespace: gray-chain-sct-2

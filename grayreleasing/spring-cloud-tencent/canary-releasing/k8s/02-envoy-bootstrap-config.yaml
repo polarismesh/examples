@@ -37,4 +37,4 @@ data:
 kind: ConfigMap
 metadata:
   name: bootstrap-config
-  namespace: sct-envoy-gw-canary
+  namespace: canary-sct
