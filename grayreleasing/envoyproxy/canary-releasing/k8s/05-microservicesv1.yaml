@@ -1,0 +1,180 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user
+  namespace: canary-envoyproxy
+  labels:
+    app: user
+    service: user
+spec:
+  type: ClusterIP
+  ports:
+  - port: 11870
+    name: http
+    targetPort: 11870
+  selector:
+    app: user  
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: canary-user
+  namespace: canary-envoyproxy
+  labels:
+    account: user
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: user
+  name: user-v1
+  namespace: canary-envoyproxy
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: user
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: user
+        version: 1.0.0
+    spec:
+      containers:
+      - image: polarismesh/examples-gray-releasing-user-v1:0.0.1-alpha.1
+        imagePullPolicy: Always
+        name: examples-gray-releasing-user-v1
+        resources:
+          limits:
+            cpu: "500m"
+            memory: 1000Mi
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: credit
+  namespace: canary-envoyproxy
+  labels:
+    app: credit
+    service: user
+spec:
+  type: ClusterIP
+  ports:
+  - port: 11871
+    name: http
+    targetPort: 11871
+  selector:
+    app: credit
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: canary-credit
+  namespace: canary-envoyproxy
+  labels:
+    account: credit
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: credit
+  name: credit-v1
+  namespace: canary-envoyproxy
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: credit
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: credit
+        version: 1.0.0
+    spec:
+      containers:
+      - image: polarismesh/examples-gray-releasing-credit-v1:0.0.1-alpha.1
+        imagePullPolicy: Always
+        name: examples-gray-releasing-credit-v1
+        resources:
+          limits:
+            cpu: "500m"
+            memory: 1000Mi
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: canary-promotion
+  namespace: canary-envoyproxy
+  labels:
+    account: promotion
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: promotion
+  namespace: canary-envoyproxy
+  labels:
+    app: promotion
+    service: user
+spec:
+  type: ClusterIP
+  ports:
+  - port: 11872
+    name: http
+    targetPort: 11872
+  selector:
+    app: promotion
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: promotion
+  name: promotion-v1
+  namespace: canary-envoyproxy
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: promotion
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: promotion
+        version: 1.0.0
+    spec:
+      containers:
+      - image: polarismesh/examples-gray-releasing-promotion-v1:0.0.1-alpha.1
+        imagePullPolicy: Always
+        name: examples-gray-releasing-promotion-v1
+        resources:
+          limits:
+            cpu: "500m"
+            memory: 1000Mi
+      restartPolicy: Always
