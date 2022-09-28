@@ -8,8 +8,77 @@
 #  under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
 #  CONDITIONS OF ANY KIND, either express or implied. See the License for the
 #  specific language governing permissions and limitations under the License.
-
+---
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bootstrap-config
+  namespace: gray-chain-sct-2
+data:
+  envoy.yaml: |-
+    node:
+      id: sct-gray-2/60c543b9-df2e-4610-b057-2fef16a973bd~10.0.5.52
+      cluster: envoy-cluster
+    dynamic_resources:
+      lds_config:
+        resource_api_version: V3
+        path_config_source:
+          path: /var/lib/xds/lds.yaml
+      cds_config:
+        resource_api_version: V3
+        path_config_source:
+          path: /var/lib/xds/cds.yaml
+      ads_config:
+        api_type: GRPC
+        transport_api_version: V3
+        grpc_services:
+        - google_grpc:
+            target_uri: "polaris.polaris-system:15010"
+            stat_prefix: polarismesh
+            channel_args:
+              args:
+                grpc.http2.max_pings_without_data:
+                  int_value: 1
+                grpc.keepalive_time_ms:
+                  int_value: 10000
+                grpc.keepalive_timeout_ms:
+                  int_value: 20000
+    admin:
+      access_log_path: /dev/stdout
+      address:
+        socket_address:
+          address: 0.0.0.0
+          port_value: 15000
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cds-config
+  namespace: gray-chain-sct-2
+data:
+  cds.yaml: |-
+    resources:
+    - "@type": type.googleapis.com/envoy.config.cluster.v3.Cluster
+      name: user
+      type: EDS
+      eds_cluster_config:
+        service_name: user
+        eds_config:
+          ads: {}
+          resource_api_version: V3
+      connect_timeout: 5s
+      lb_subset_config:
+        fallback_policy: ANY_ENDPOINT
+        subset_selectors:
+        - keys:
+          - version
+          fallback_policy: NO_FALLBACK
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: lds-config
+  namespace: gray-chain-sct-2
 data:
   lds.yaml: |-
       resources:
@@ -34,37 +103,30 @@ data:
                     route_config:
                       name: local_route
                       virtual_hosts:
-                        - name: base_service
-                          domains:
-                            - "base.service.com"
-                          routes:
-                            - match:
-                                prefix: "/"
-                              route:
-                                cluster: user
-                                metadata_match:
-                                  filter_metadata:
-                                    envoy.lb:
-                                      version: v1.0.0
                         - name: gray_service
                           domains:
-                            - "gray.service.com"
+                            - base.service.com
                           routes:
                             - match:
-                                prefix: "/"
-                              request_headers_to_add:
-                                - header:
-                                    key: gray
-                                    value: "true"
+                                prefix: /
+                                headers:
+                                  - name: uid
+                                    exact_match: '200'
                               route:
                                 cluster: user
                                 metadata_match:
                                   filter_metadata:
                                     envoy.lb:
                                       version: v2.0.0
-
-
-kind: ConfigMap
-metadata:
-  name: lds-config
-  namespace: gray-chain-sct-1
+                              request_headers_to_add:
+                                - header:
+                                    key: gray
+                                    value: 'true'
+                            - match:
+                                prefix: /
+                              route:
+                                cluster: user
+                                metadata_match:
+                                  filter_metadata:
+                                    envoy.lb:
+                                      version: v1.0.0          
