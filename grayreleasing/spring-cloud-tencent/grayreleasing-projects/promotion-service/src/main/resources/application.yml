@@ -20,6 +20,9 @@ spring:
     tencent:
       metadata:
         transitive:
+      rpc-enhancement:
+        reporter:
+          enabled: true
 
     polaris:
       address: ${POLARIS_SERVER_GRPC_ADDRESS:grpc://polaris.polaris-system:8091}
