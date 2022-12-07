@@ -20,9 +20,9 @@ public class EurekaConsumerApplication {
     private RestTemplate restTemplate;
 
     @RequestMapping("/echo")
-    public String echo(@RequestParam(required = false, defaultValue = PROVIDER_SERVICE_NAME) String provider_service_name, @RequestParam String value) {
+    public String echo(@RequestParam(required = false, defaultValue = PROVIDER_SERVICE_NAME) String providerServiceName, @RequestParam String value) {
         return restTemplate.getForObject(
-                String.format("http://%s/echo1?value=%s", provider_service_name, value), String.class);
+                String.format("http://%s/echo1?value=%s", providerServiceName, value), String.class);
     }
 
     public static void main(String[] args) {
