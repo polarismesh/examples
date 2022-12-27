@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    qcloud-app: polaris-dns-consumer
+  name: polaris-dns-consumer
+  namespace: polaris-system
+spec:
+  progressDeadlineSeconds: 60
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      k8s-app: polaris-dns-consumer
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        k8s-app: polaris-dns-consumer
+    spec:
+      containers:
+        - name: polaris-dns-consumer
+          image: polarismesh/polaris-dns-consumer:latest
+          command: ["./consumer"]
+          args:
+            [
+              "--namespace=default",
+              "--service=echoserver",
+              "--providerPort=10000",
+              "--port=20000",
+            ]
+          env:
+            - name: POLARIS_SERVER
+              value: polaris.polaris-system:8091
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: "500m"
+              memory: 1000Mi
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
