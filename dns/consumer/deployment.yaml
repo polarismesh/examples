@@ -4,7 +4,7 @@ metadata:
   labels:
     qcloud-app: polaris-dns-consumer
   name: polaris-dns-consumer
-  namespace: polaris-system
+  namespace: default
 spec:
   progressDeadlineSeconds: 60
   replicas: 1
