@@ -54,7 +54,18 @@ func (svr *PolarisConsumer) runWebServer() {
 	http.HandleFunc("/echo", func(rw http.ResponseWriter, r *http.Request) {
 		log.Printf("start to invoke by dns operation")
 		url := fmt.Sprintf("http://%s.%s:%d/echo", service, namespace, providerPort)
-		resp, err := http.Get(url)
+		gReq, err := http.NewRequest(http.MethodGet, url, nil)
+		if err != nil {
+			rw.WriteHeader(http.StatusInternalServerError)
+			_, _ = rw.Write([]byte(fmt.Sprintf("[errot] send request to %s fail : %s", url, err)))
+			return
+		}
+		for k, v := range r.Header {
+			for i := range v {
+				r.Header.Add(k, v[i])
+			}
+		}
+		resp, err := http.DefaultClient.Do(gReq)
 		if err != nil {
 			rw.WriteHeader(http.StatusInternalServerError)
 			_, _ = rw.Write([]byte(fmt.Sprintf("[errot] send request to %s fail : %s", url, err)))
