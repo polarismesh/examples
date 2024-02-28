@@ -55,9 +55,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.tencent.polaris</groupId>
-            <artifactId>dubbo-api-example</artifactId>
-            <version>${dubbo.polaris.version}</version>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.19.4</version>
         </dependency>
 
         <!--    引入 polaris 注册能力    -->
