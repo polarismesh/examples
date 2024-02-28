@@ -66,6 +66,12 @@
             <version>${dubbo.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.19.4</version>
+        </dependency>
+
         <!--    引入 polaris 注册能力    -->
         <dependency>
             <groupId>com.tencent.polaris</groupId>
