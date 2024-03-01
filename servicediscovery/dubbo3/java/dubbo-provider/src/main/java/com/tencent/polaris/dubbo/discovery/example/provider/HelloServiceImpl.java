@@ -7,6 +7,6 @@ import org.apache.dubbo.config.annotation.DubboService;
 public class HelloServiceImpl implements HelloService {
     @Override
     public String say(String name) {
-        return "hello " + name;
+        return "hello " + name + " " + System.getenv("SELF_INFO");
     }
 }
