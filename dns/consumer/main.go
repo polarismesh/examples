@@ -20,7 +20,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 )
@@ -33,10 +33,10 @@ var (
 )
 
 func initArgs() {
-	flag.StringVar(&namespace, "namespace", "default", "namespace")
-	flag.StringVar(&service, "service", "echoserver", "service")
-	flag.Int64Var(&providerPort, "providerPort", 10000, "providerPort")
-	flag.Int64Var(&port, "port", 20000, "port")
+	flag.Int64Var(&port, "port", 20000, "self port")
+	flag.StringVar(&namespace, "calleeNamespace", "default", "callee namespace")
+	flag.StringVar(&service, "calleeService", "echoserver", "callee service")
+	flag.Int64Var(&providerPort, "calleePort", 10000, "callee port")
 }
 
 // PolarisConsumer is a consumer of polaris
@@ -74,7 +74,7 @@ func (svr *PolarisConsumer) runWebServer() {
 
 		defer resp.Body.Close()
 
-		data, err := ioutil.ReadAll(resp.Body)
+		data, err := io.ReadAll(resp.Body)
 		if err != nil {
 			log.Printf("[error] read resp from %s fail : %s", url, err)
 			rw.WriteHeader(http.StatusInternalServerError)

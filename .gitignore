@@ -50,4 +50,7 @@ lib/
 backup/
 *.log
 
-
+**/polaris/*
+**/vendor
+/dns/provider/provider
+/dns/consumer/consumer
