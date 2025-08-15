@@ -56,5 +56,5 @@ clean: ## Clean the provider binary.
 ##@ Docker
 .PHONY: image
 image: ## Build the provider image.
-	bash build.sh $IMAGE_TAG
+	bash build.sh ${IMAGE_TAG}
 

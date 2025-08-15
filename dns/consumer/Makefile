@@ -56,5 +56,5 @@ clean: ## Clean the consumer binary.
 ##@ Docker
 .PHONY: image
 image: ## Build the consumer image.
-	bash build.sh $IMAGE_TAG
+	bash build.sh ${IMAGE_TAG}
 
