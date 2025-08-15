@@ -23,6 +23,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 var (
@@ -54,6 +55,54 @@ func (svr *PolarisConsumer) runWebServer() {
 	http.HandleFunc("/echo", func(rw http.ResponseWriter, r *http.Request) {
 		log.Printf("start to invoke by dns operation")
 		url := fmt.Sprintf("http://%s.%s:%d/echo", service, namespace, providerPort)
+		gReq, err := http.NewRequest(http.MethodGet, url, nil)
+		if err != nil {
+			rw.WriteHeader(http.StatusInternalServerError)
+			_, _ = rw.Write([]byte(fmt.Sprintf("[errot] send request to %s fail : %s", url, err)))
+			return
+		}
+		for k, v := range r.Header {
+			for i := range v {
+				r.Header.Add(k, v[i])
+			}
+		}
+		resp, err := http.DefaultClient.Do(gReq)
+		if err != nil {
+			rw.WriteHeader(http.StatusInternalServerError)
+			_, _ = rw.Write([]byte(fmt.Sprintf("[errot] send request to %s fail : %s", url, err)))
+			return
+		}
+
+		defer resp.Body.Close()
+
+		data, err := io.ReadAll(resp.Body)
+		if err != nil {
+			log.Printf("[error] read resp from %s fail : %s", url, err)
+			rw.WriteHeader(http.StatusInternalServerError)
+			_, _ = rw.Write([]byte(fmt.Sprintf("[error] read resp from %s fail : %s", url, err)))
+			return
+		}
+		rw.WriteHeader(http.StatusOK)
+		_, _ = rw.Write(data)
+	})
+
+	http.HandleFunc("/echoWithParams", func(rw http.ResponseWriter, r *http.Request) {
+		queryParams := r.URL.Query()
+		ns := queryParams.Get("ns")
+		svc := queryParams.Get("svc")
+		portStr := queryParams.Get("port")
+		if ns == "" || svc == "" || portStr == "" {
+			rw.WriteHeader(http.StatusBadRequest)
+			_, _ = rw.Write([]byte("Missing required query parameters: ns, svc, port"))
+			return
+		}
+		port, err := strconv.ParseInt(portStr, 10, 64)
+		if err != nil {
+			rw.WriteHeader(http.StatusBadRequest)
+			_, _ = rw.Write([]byte("Invalid port parameter"))
+			return
+		}
+		url := fmt.Sprintf("http://%s.%s:%d/echo", svc, ns, port)
 		gReq, err := http.NewRequest(http.MethodGet, url, nil)
 		if err != nil {
 			rw.WriteHeader(http.StatusInternalServerError)
