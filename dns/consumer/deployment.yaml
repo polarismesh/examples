@@ -28,14 +28,11 @@ spec:
           command: ["./consumer"]
           args:
             [
-              "--namespace=default",
-              "--service=echoserver",
-              "--providerPort=10000",
               "--port=20000",
+              "--calleeNamespace=default",
+              "--calleeService=echoserver",
+              "--calleePort=10000",
             ]
-          env:
-            - name: POLARIS_SERVER
-              value: polaris.polaris-system:8091
           imagePullPolicy: Always
           resources:
             limits:

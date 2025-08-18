@@ -6,7 +6,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# https://opensource.org/licenses/BSD-3-Clause
+# https://opensource.DOCKER_IMAGE_RPO/licenses/BSD-3-Clause
 #
 # Unless required by applicable law or agreed to in writing, software distributed
 # under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
@@ -25,20 +25,23 @@ VERSION ?= $(shell cat version 2>/dev/null)
 # - use the IMAGE_TAG as arg of the build-docker target (e.g make build-docker IMAGE_TAG=v0.0.2)
 # - use environment variables to overwrite this value (e.g export IMAGE_TAG=v0.0.2)
 IMAGE_TAG ?= $(VERSION)
+DOCKER_IMAGE_RPO ?= polarismesh
+APP = polaris-dns-consumer
+PLATFORMS = linux/amd64,linux/arm64
 
 
 ##@ General
 
-# The help target prints out all targets with their descriptions organized
+# The help target prints out all targets with their descriptions DOCKER_IMAGE_RPOanized
 # beneath their categories. The categories are represented by '##@' and the
 # target descriptions by '##'. The awk commands is responsible for reading the
 # entire set of makefiles included in this invocation, looking for lines of the
 # file as xyz: ## something, and then pretty-format the target and help. Then,
 # if there's a line with ##@ something, that gets pretty-printed as a category.
 # More info on the usage of ANSI control characters for terminal formatting:
-# https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_parameters
+# https://en.wikipedia.DOCKER_IMAGE_RPO/wiki/ANSI_escape_code#SGR_parameters
 # More info on the awk command:
-# http://linuxcommand.org/lc3_adv_awk.php
+# http://linuxcommand.DOCKER_IMAGE_RPO/lc3_adv_awk.php
 
 help: ## Display this help.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
@@ -46,15 +49,27 @@ help: ## Display this help.
 ##@ Build
 .PHONY: build
 build: ## Build the consumer binary.
-	CGO_ENABLED=0 go build -o consumer
+	CGO_ENABLED=0 go build -o ./bin/consumer
 
 ##@ Clean
 .PHONY: clean
 clean: ## Clean the consumer binary.
-	rm -f consumer
+	rm -rf ./bin
 
 ##@ Docker
 .PHONY: image
 image: ## Build the consumer image.
-	bash build.sh ${IMAGE_TAG}
+	@echo "------------------"
+	@echo "--> Building and push multi-arch docker image for consumer"
+	@echo "------------------"
+	@docker buildx build ./ -t $(DOCKER_IMAGE_RPO)/$(APP):$(IMAGE_TAG) --platform $(PLATFORMS)
 
+.PHONY: push
+push: ## push the consumer image.
+	@echo "------------------"
+	@echo "--> Building and push multi-arch docker image for consumer"
+	@echo "------------------"
+	@docker buildx build ./ -t $(DOCKER_IMAGE_RPO)/$(APP):$(IMAGE_TAG) --platform $(PLATFORMS) --push
+
+.PHONY: all
+all: push

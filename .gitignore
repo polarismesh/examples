@@ -52,5 +52,4 @@ backup/
 
 **/polaris/*
 **/vendor
-/dns/provider/provider
-/dns/consumer/consumer
+**/bin

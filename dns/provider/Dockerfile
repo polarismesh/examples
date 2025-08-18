@@ -15,10 +15,17 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-FROM alpine:latest
+FROM golang:1.24 AS build
+WORKDIR /app
+ADD go.mod go.mod
+ADD go.sum go.sum
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 go build -a -o provider *.go
 
+####################################
+FROM alpine:3.22
 RUN sed -i 's!http://dl-cdn.alpinelinux.org/!https://mirrors.tencent.com/!g' /etc/apk/repositories
-
 RUN set -eux && \
     apk add tcpdump && \
     apk add tzdata && \
@@ -27,10 +34,8 @@ RUN set -eux && \
     apk add bash && \
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     echo "Asia/Shanghai" > /etc/timezone && \
-    date
+    date \
 
-COPY provider /root/provider
-
-WORKDIR /root
-
-CMD ["/root/provider"]
+WORKDIR /
+COPY --from=build /app/provider .
+ENTRYPOINT ["/provider"]
