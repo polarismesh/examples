@@ -49,7 +49,7 @@ help: ## Display this help.
 ##@ Build
 .PHONY: build
 build: ## Build the provider binary.
-	CGO_ENABLED=0 go build -o ./bin/provider
+	CGO_ENABLED=0 go build -buildvcs=false -o ./bin/provider
 
 ##@ Clean
 .PHONY: clean

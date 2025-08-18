@@ -49,7 +49,7 @@ help: ## Display this help.
 ##@ Build
 .PHONY: build
 build: ## Build the consumer binary.
-	CGO_ENABLED=0 go build -o ./bin/consumer
+	CGO_ENABLED=0 go build -buildvcs=false -o ./bin/consumer
 
 ##@ Clean
 .PHONY: clean
