@@ -50,4 +50,6 @@ lib/
 backup/
 *.log
 
-
+**/polaris/*
+**/vendor
+**/bin

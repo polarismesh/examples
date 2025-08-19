@@ -20,9 +20,10 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 var (
@@ -33,10 +34,10 @@ var (
 )
 
 func initArgs() {
-	flag.StringVar(&namespace, "namespace", "default", "namespace")
-	flag.StringVar(&service, "service", "echoserver", "service")
-	flag.Int64Var(&providerPort, "providerPort", 10000, "providerPort")
-	flag.Int64Var(&port, "port", 20000, "port")
+	flag.Int64Var(&port, "port", 20000, "self port")
+	flag.StringVar(&namespace, "calleeNamespace", "default", "callee namespace")
+	flag.StringVar(&service, "calleeService", "echoserver", "callee service")
+	flag.Int64Var(&providerPort, "calleePort", 10000, "callee port")
 }
 
 // PolarisConsumer is a consumer of polaris
@@ -74,7 +75,55 @@ func (svr *PolarisConsumer) runWebServer() {
 
 		defer resp.Body.Close()
 
-		data, err := ioutil.ReadAll(resp.Body)
+		data, err := io.ReadAll(resp.Body)
+		if err != nil {
+			log.Printf("[error] read resp from %s fail : %s", url, err)
+			rw.WriteHeader(http.StatusInternalServerError)
+			_, _ = rw.Write([]byte(fmt.Sprintf("[error] read resp from %s fail : %s", url, err)))
+			return
+		}
+		rw.WriteHeader(http.StatusOK)
+		_, _ = rw.Write(data)
+	})
+
+	http.HandleFunc("/echoWithParams", func(rw http.ResponseWriter, r *http.Request) {
+		queryParams := r.URL.Query()
+		ns := queryParams.Get("ns")
+		svc := queryParams.Get("svc")
+		portStr := queryParams.Get("port")
+		if ns == "" || svc == "" || portStr == "" {
+			rw.WriteHeader(http.StatusBadRequest)
+			_, _ = rw.Write([]byte("Missing required query parameters: ns, svc, port"))
+			return
+		}
+		port, err := strconv.ParseInt(portStr, 10, 64)
+		if err != nil {
+			rw.WriteHeader(http.StatusBadRequest)
+			_, _ = rw.Write([]byte("Invalid port parameter"))
+			return
+		}
+		url := fmt.Sprintf("http://%s.%s:%d/echo", svc, ns, port)
+		gReq, err := http.NewRequest(http.MethodGet, url, nil)
+		if err != nil {
+			rw.WriteHeader(http.StatusInternalServerError)
+			_, _ = rw.Write([]byte(fmt.Sprintf("[errot] send request to %s fail : %s", url, err)))
+			return
+		}
+		for k, v := range r.Header {
+			for i := range v {
+				r.Header.Add(k, v[i])
+			}
+		}
+		resp, err := http.DefaultClient.Do(gReq)
+		if err != nil {
+			rw.WriteHeader(http.StatusInternalServerError)
+			_, _ = rw.Write([]byte(fmt.Sprintf("[errot] send request to %s fail : %s", url, err)))
+			return
+		}
+
+		defer resp.Body.Close()
+
+		data, err := io.ReadAll(resp.Body)
 		if err != nil {
 			log.Printf("[error] read resp from %s fail : %s", url, err)
 			rw.WriteHeader(http.StatusInternalServerError)

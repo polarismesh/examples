@@ -4,7 +4,7 @@ set -euo pipefail
 
 # 设置Docker仓库，默认为polarismesh
 DOCKER_IMAGE_RPO="${DOCKER_RPO:-polarismesh}"
-APP=polaris-dns-consumer
+APP=polaris-dns-provider
 push_image=true  # 默认推送镜像
 
 # 解析参数
@@ -37,7 +37,7 @@ script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 cd "$script_dir"
 
 # 构建二进制
-go build -buildvcs=false -o consumer . || {
+go build -buildvcs=false -o provider . || {
     echo "Error: Failed to build ${APP} binary" >&2
     exit 1
 }
