@@ -34,7 +34,7 @@ RUN set -eux && \
     apk add bash && \
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     echo "Asia/Shanghai" > /etc/timezone && \
-    date \
+    date
 
 WORKDIR /
 COPY --from=build /app/provider .
