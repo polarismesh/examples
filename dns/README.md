@@ -17,8 +17,11 @@ make build
 ```shell
 # 设置北极星地址
 export POLARIS_SERVER=127.0.0.1:8091
+export REGION=china
+export ZONE=ap-guangzhou
+export CAMPUS=ap-guangzhou-3
 # 启动 provider
-./provider
+./bin/provider
 ```
 
 ## consumer部署
@@ -31,7 +34,7 @@ make build
 ```
 ### 执行
 ```shell
-./consumer
+./bin/consumer
 ```
 
 # 验证
