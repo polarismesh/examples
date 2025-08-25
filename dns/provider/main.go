@@ -29,6 +29,8 @@ import (
 	"syscall"
 
 	"github.com/polarismesh/polaris-go"
+	"github.com/polarismesh/polaris-go/pkg/config"
+	"github.com/polarismesh/polaris-go/plugin/location"
 )
 
 var (
@@ -146,10 +148,30 @@ func main() {
 		log.Print("namespace and service are required")
 		return
 	}
-	// provider, err := polaris.NewProviderAPI()
-	// 或者使用以下方法,则不需要创建配置文件
-	provider, err := polaris.NewProviderAPIByAddress(os.Getenv("POLARIS_SERVER"))
 
+	polarisServer := os.Getenv("POLARIS_SERVER")
+	if polarisServer == "" {
+		log.Fatalf("[ERROR]polaris server is not set")
+	}
+	addresses := strings.Split(polarisServer, ",")
+	sdkCfg := config.NewDefaultConfiguration(addresses)
+
+	region := os.Getenv("REGION")
+	zone := os.Getenv("ZONE")
+	campus := os.Getenv("CAMPUS")
+	if region != "" || zone != "" || campus != "" {
+		providerConfig := &config.LocationProviderConfigImpl{
+			Type: location.Local,
+			Options: map[string]interface{}{
+				"region": region,
+				"zone":   zone,
+				"campus": campus,
+			},
+		}
+		sdkCfg.Global.Location.Providers = append(sdkCfg.Global.Location.Providers, providerConfig)
+	}
+
+	provider, err := polaris.NewProviderAPIByConfig(sdkCfg)
 	if err != nil {
 		log.Fatalf("fail to create providerAPI, err is %v", err)
 	}
